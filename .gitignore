@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+lambda.zip
+
+# AWS / Temp
+tmp_*.json
+.aws/
+infrastructure/website-bucket-policy.json
+infrastructure/lambda.zip
+infrastructure/tmp_policy.json
+infrastructure/tmp_req.json
+infrastructure/tmp_res.json
+
+# Local Env
+frontend/env.js
+
+# OS
+.DS_Store
+Thumbs.db

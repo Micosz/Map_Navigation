@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indoor Navigation Dashboard</title>
+    <link rel="stylesheet" href="index.css">
+    
+    <!-- Load Env dynamically mapped by AWS Setup -->
+    <script src="env.js"></script>
+</head>
+<body>
+    <!-- Search Interface -->
+    <div class="search-panel">
+        <div class="search-flex">
+            <h1 class="compact-title">Indoor Wayfinder</h1>
+            
+            <div class="input-group">
+                <div class="input-box">
+                    <span class="tiny-label">FROM:</span>
+                    <input type="text" id="start-query" placeholder="101" autocomplete="off">
+                </div>
+                
+                <div class="input-box">
+                    <span class="tiny-label">TO:</span>
+                    <input type="text" id="goal-query" placeholder="204" autocomplete="off">
+                </div>
+                
+                <button onclick="navigateUser(event)">Navigate</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Layer -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Active Floor Tracker -->
+    <div class="tracker-status" id="tracker-status">
+        <div class="floor-badge active" id="badge-floor-1">Floor 1</div>
+        <div class="floor-badge" id="badge-floor-2">Floor 2</div>
+    </div>
+
+    <!-- Mapping Engine -->
+    <div class="map-arena" id="map-arena">
+        
+        <!-- Floor 1 Container -->
+        <div class="map-layer active" id="layer-floor-1">
+            <img src="LC3-MAP-1stFloor.svg" alt="Floor 1" class="map-image" id="img-floor-1" width="1217" height="742">
+            <canvas id="canvas-floor-1" width="1217" height="742"></canvas>
+        </div>
+
+        <!-- Floor 2 Container -->
+        <div class="map-layer" id="layer-floor-2">
+            <img src="LC3-MAP-2ndFloor.svg" alt="Floor 2" class="map-image" id="img-floor-2" width="1152" height="766">
+            <canvas id="canvas-floor-2" width="1152" height="766"></canvas>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
