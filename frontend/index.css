@@ -216,6 +216,64 @@ button:active {
   z-index: 10;
 }
 
+/* =====================================================
+   MOBILE-FIRST MAP: Scrollable/Pannable Static Map
+   ====================================================
+   On touch devices (pointer: coarse), the map becomes
+   a fixed-size scroll surface. The user can freely pan
+   and use native pinch-to-zoom without the map snapping.
+   The search panel stays pinned at the top always.
+===================================================== */
+@media (pointer: coarse) {
+  body {
+    overflow: hidden;
+  }
+
+  .search-panel {
+    position: fixed; /* stays visible even as map scrolls */
+    top: 10px;
+    z-index: 200;
+  }
+
+  .tracker-status {
+    position: fixed; /* stays visible even as map scrolls */
+    z-index: 200;
+  }
+
+  .map-arena {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    display: block;
+    align-items: unset;
+    justify-content: unset;
+    /* Push down to avoid overlap with fixed search panel */
+    padding-top: 60px;
+  }
+
+  .map-layer {
+    position: relative;
+    top: unset;
+    left: unset;
+    transform: none !important; /* block JS from rescaling */
+    opacity: 1;
+    pointer-events: auto;
+    display: none; /* JS will show the correct floor */
+  }
+
+  .map-layer.active {
+    display: block;
+  }
+
+  .map-image {
+    /* Render the SVG at its native size for clarity */
+    width: auto;
+    height: auto;
+    max-width: none;
+    display: block;
+  }
+}
+
 /* Floating Alerts */
 .toast-container {
   position: absolute;

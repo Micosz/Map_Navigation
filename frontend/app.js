@@ -38,12 +38,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Auto-scale map on load
-    resizeMap();
+    // Init map based on device type
+    initMap();
 });
 
-window.addEventListener('resize', resizeMap);
+// Detect if the user is on a touchscreen (mobile/tablet)
+function isTouchDevice() {
+    return window.matchMedia('(pointer: coarse)').matches;
+}
 
+function initMap() {
+    if (isTouchDevice()) {
+        setupMobileMap();
+    } else {
+        resizeMap();
+        window.addEventListener('resize', resizeMap);
+    }
+}
+
+// DESKTOP: Auto-fit the map to the screen on resize
 function resizeMap() {
     document.querySelectorAll('.map-layer').forEach(layer => {
         const canvas = layer.querySelector('canvas');
@@ -55,6 +68,36 @@ function resizeMap() {
         
         layer.style.transform = `translate(-50%, -45%) scale(${scale})`;
     });
+}
+
+// MOBILE: Make the map a fixed-size, pannable/scrollable surface
+// The map will NOT snap back when the user pinches or scrolls
+function setupMobileMap() {
+    const arena = document.getElementById('map-arena');
+    
+    // Convert arena to a scrollable container
+    arena.style.overflow = 'auto';
+    arena.style.webkitOverflowScrolling = 'touch';
+    arena.style.touchAction = 'pan-x pan-y';
+    arena.style.display = 'block';
+    arena.style.position = 'relative';
+    arena.style.cursor = 'grab';
+
+    // Make each layer static (no transform centering — just block layout inside scroll area)
+    document.querySelectorAll('.map-layer').forEach(layer => {
+        layer.style.position = 'relative';
+        layer.style.top = 'unset';
+        layer.style.left = 'unset';
+        layer.style.transform = 'none';
+        layer.style.display = 'none'; // hide by default; switchFloor manages this
+    });
+
+    // Show the starting active floor
+    const activeLayer = document.querySelector('.map-layer.active');
+    if (activeLayer) activeLayer.style.display = 'block';
+
+    // Override switchFloor to use display instead of class-based opacity
+    window._mobileFloorSwitch = true;
 }
 
 let currentFloor = 1;
@@ -183,10 +226,21 @@ function reconstructPath(cameFrom, currentId, nodes) {
 // Rendering Engine
 function switchFloor(floorNum) {
     currentFloor = floorNum;
-    document.getElementById('layer-floor-1').classList.toggle('active', floorNum === 1);
-    document.getElementById('layer-floor-2').classList.toggle('active', floorNum === 2);
+    
     document.getElementById('badge-floor-1').classList.toggle('active', floorNum === 1);
     document.getElementById('badge-floor-2').classList.toggle('active', floorNum === 2);
+
+    if (window._mobileFloorSwitch) {
+        // Mobile mode: use display show/hide (no opacity/transform tricks)
+        const l1 = document.getElementById('layer-floor-1');
+        const l2 = document.getElementById('layer-floor-2');
+        l1.style.display = floorNum === 1 ? 'block' : 'none';
+        l2.style.display = floorNum === 2 ? 'block' : 'none';
+    } else {
+        // Desktop mode: use class toggling (opacity transition)
+        document.getElementById('layer-floor-1').classList.toggle('active', floorNum === 1);
+        document.getElementById('layer-floor-2').classList.toggle('active', floorNum === 2);
+    }
 }
 
 function drawRoute(path) {
