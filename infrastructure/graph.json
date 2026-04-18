@@ -2,126 +2,6 @@
   "building": "LC3",
   "nodes": [
     {
-      "id": "LC3_hallway-1",
-      "name": "hallway-1",
-      "floor": 1,
-      "x": 182,
-      "y": 116,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-2",
-      "name": "hallway-2",
-      "floor": 1,
-      "x": 614,
-      "y": 116,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-3",
-      "name": "hallway-3",
-      "floor": 1,
-      "x": 616,
-      "y": 241,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-4",
-      "name": "hallway-4",
-      "floor": 1,
-      "x": 640,
-      "y": 264,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-5",
-      "name": "hallway-5",
-      "floor": 1,
-      "x": 631,
-      "y": 293,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-6",
-      "name": "hallway-6",
-      "floor": 1,
-      "x": 799,
-      "y": 295,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-7",
-      "name": "hallway-7",
-      "floor": 1,
-      "x": 799,
-      "y": 159,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-8",
-      "name": "hallway-8",
-      "floor": 1,
-      "x": 1057,
-      "y": 161,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-9",
-      "name": "hallway-9",
-      "floor": 1,
-      "x": 1057,
-      "y": 292,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-10",
-      "name": "hallway-10",
-      "floor": 1,
-      "x": 1058,
-      "y": 323,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-11",
-      "name": "hallway-11",
-      "floor": 1,
-      "x": 1103,
-      "y": 331,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-12",
-      "name": "hallway-12",
-      "floor": 1,
-      "x": 1058,
-      "y": 442,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-13",
-      "name": "hallway-13",
-      "floor": 1,
-      "x": 1007,
-      "y": 441,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-14",
-      "name": "hallway-14",
-      "floor": 1,
-      "x": 1007,
-      "y": 546,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-15",
-      "name": "hallway-15",
-      "floor": 1,
-      "x": 1071,
-      "y": 546,
-      "type": "junction"
-    },
-    {
       "id": "LC3_111",
       "name": "111",
       "floor": 1,
@@ -143,8 +23,8 @@
       "id": "LC3_109",
       "name": "109",
       "floor": 1,
-      "x": 121,
-      "y": 77,
+      "x": 129,
+      "y": 91,
       "type": "room",
       "label": "ห้องบรรยายเรียนรวม"
     },
@@ -152,8 +32,8 @@
       "id": "LC3_108/1",
       "name": "108/1",
       "floor": 1,
-      "x": 171,
-      "y": 63,
+      "x": 172,
+      "y": 68,
       "type": "room",
       "label": "ห้องเจ้าหน้าที่"
     },
@@ -161,8 +41,8 @@
       "id": "LC3_108",
       "name": "108",
       "floor": 1,
-      "x": 209,
-      "y": 69,
+      "x": 216,
+      "y": 85,
       "type": "room",
       "label": "ห้องบรรยายเรียนรวม"
     },
@@ -170,8 +50,8 @@
       "id": "LC3_106",
       "name": "106",
       "floor": 1,
-      "x": 264,
-      "y": 79,
+      "x": 277,
+      "y": 85,
       "type": "room",
       "label": "ห้องบรรยายเรียนรวม"
     },
@@ -179,8 +59,8 @@
       "id": "LC3_104/1",
       "name": "104/1",
       "floor": 1,
-      "x": 324,
-      "y": 82,
+      "x": 326,
+      "y": 86,
       "type": "room",
       "label": "ห้องพักนักศึกษาระดับบัณฑิตศึกษา (วิทยาศาสตร์สิ่งแวดล้อม)"
     },
@@ -188,8 +68,8 @@
       "id": "LC3_104",
       "name": "104",
       "floor": 1,
-      "x": 385,
-      "y": 79,
+      "x": 377,
+      "y": 87,
       "type": "room",
       "label": "ห้องบรรยายเรียนรวม"
     },
@@ -197,8 +77,8 @@
       "id": "LC3_103",
       "name": "103",
       "floor": 1,
-      "x": 429,
-      "y": 89,
+      "x": 439,
+      "y": 87,
       "type": "room",
       "label": "ห้องบรรยายเรียนรวม"
     },
@@ -206,7 +86,7 @@
       "id": "LC3_102/2",
       "name": "102/2",
       "floor": 1,
-      "x": 480,
+      "x": 485,
       "y": 87,
       "type": "room",
       "label": "ห้องสัมมนาบัณฑิตศึกษา (คณิตศาสตร์และสถิติ)"
@@ -215,8 +95,8 @@
       "id": "LC3_102/1",
       "name": "102/1",
       "floor": 1,
-      "x": 520,
-      "y": 92,
+      "x": 518,
+      "y": 86,
       "type": "room",
       "label": "ห้องสัมมนาบัณฑิตศึกษา (คณิตศาสตร์และสถิติ)"
     },
@@ -224,7 +104,7 @@
       "id": "LC3_107",
       "name": "107",
       "floor": 1,
-      "x": 264,
+      "x": 252,
       "y": 142,
       "type": "room",
       "label": "ห้องบรรยายเรียนรวม"
@@ -242,7 +122,7 @@
       "id": "LC3_101/1",
       "name": "101/1",
       "floor": 1,
-      "x": 384,
+      "x": 379,
       "y": 141,
       "type": "room",
       "label": "ห้องบรรยาย 4 (วิทยาศาสตร์สิ่งแวดล้อม)"
@@ -251,7 +131,7 @@
       "id": "LC3_101/2",
       "name": "101/2",
       "floor": 1,
-      "x": 428,
+      "x": 421,
       "y": 141,
       "type": "room",
       "label": "ห้องสัมมนาบัณฑิตศึกษา (คณิตศาสตร์และสถิติ)"
@@ -269,7 +149,7 @@
       "id": "LC3_122/6",
       "name": "122/6",
       "floor": 1,
-      "x": 586,
+      "x": 592,
       "y": 442,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
@@ -278,8 +158,8 @@
       "id": "LC3_122/5",
       "name": "122/5",
       "floor": 1,
-      "x": 564,
-      "y": 465,
+      "x": 569,
+      "y": 463,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
     },
@@ -287,8 +167,8 @@
       "id": "LC3_122/4",
       "name": "122/4",
       "floor": 1,
-      "x": 550,
-      "y": 437,
+      "x": 544,
+      "y": 441,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
     },
@@ -296,8 +176,8 @@
       "id": "LC3_122/3",
       "name": "122/3",
       "floor": 1,
-      "x": 519,
-      "y": 438,
+      "x": 528,
+      "y": 441,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
     },
@@ -305,7 +185,7 @@
       "id": "LC3_122/1",
       "name": "122/1",
       "floor": 1,
-      "x": 476,
+      "x": 479,
       "y": 443,
       "type": "room",
       "label": "ห้องเจ้าหน้าที่"
@@ -315,7 +195,7 @@
       "name": "122/2",
       "floor": 1,
       "x": 504,
-      "y": 464,
+      "y": 462,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
     },
@@ -323,8 +203,8 @@
       "id": "LC3_122",
       "name": "122",
       "floor": 1,
-      "x": 409,
-      "y": 455,
+      "x": 406,
+      "y": 456,
       "type": "room",
       "label": "ห้องบรรยายเรียนรวม"
     },
@@ -332,8 +212,8 @@
       "id": "LC3_119/5",
       "name": "119/5",
       "floor": 1,
-      "x": 335,
-      "y": 462,
+      "x": 334,
+      "y": 459,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
     },
@@ -341,8 +221,8 @@
       "id": "LC3_119/4",
       "name": "119/4",
       "floor": 1,
-      "x": 309,
-      "y": 463,
+      "x": 312,
+      "y": 459,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
     },
@@ -351,7 +231,7 @@
       "name": "119/3",
       "floor": 1,
       "x": 290,
-      "y": 462,
+      "y": 459,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
     },
@@ -360,7 +240,7 @@
       "name": "119/2",
       "floor": 1,
       "x": 268,
-      "y": 462,
+      "y": 459,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
     },
@@ -368,8 +248,8 @@
       "id": "LC3_119/1",
       "name": "119/1",
       "floor": 1,
-      "x": 244,
-      "y": 461,
+      "x": 246,
+      "y": 460,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
     },
@@ -386,8 +266,8 @@
       "id": "LC3_121/3",
       "name": "121/3",
       "floor": 1,
-      "x": 519,
-      "y": 535,
+      "x": 527,
+      "y": 536,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
     },
@@ -395,8 +275,8 @@
       "id": "LC3_121/2",
       "name": "121/2",
       "floor": 1,
-      "x": 505,
-      "y": 510,
+      "x": 502,
+      "y": 509,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
     },
@@ -404,7 +284,7 @@
       "id": "LC3_121/1",
       "name": "121/1",
       "floor": 1,
-      "x": 477,
+      "x": 478,
       "y": 535,
       "type": "room",
       "label": "ห้องพักอาจารย์ (คณิตศาสตร์และสถิติ)"
@@ -413,8 +293,8 @@
       "id": "LC3_121",
       "name": "121",
       "floor": 1,
-      "x": 409,
-      "y": 515,
+      "x": 405,
+      "y": 516,
       "type": "room",
       "label": "ห้องบรรยายเรียนรวม"
     },
@@ -422,8 +302,8 @@
       "id": "LC3_120",
       "name": "120",
       "floor": 1,
-      "x": 336,
-      "y": 507,
+      "x": 328,
+      "y": 515,
       "type": "room",
       "label": "ห้องเก็บของ"
     },
@@ -431,8 +311,8 @@
       "id": "LC3_118/1",
       "name": "118/1",
       "floor": 1,
-      "x": 290,
-      "y": 504,
+      "x": 281,
+      "y": 514,
       "type": "room",
       "label": "ห้องบรรยายเรียนรวม"
     },
@@ -440,8 +320,8 @@
       "id": "LC3_118",
       "name": "118",
       "floor": 1,
-      "x": 221,
-      "y": 507,
+      "x": 212,
+      "y": 515,
       "type": "room",
       "label": "ห้องบรรยายเรียนรวม"
     },
@@ -449,8 +329,8 @@
       "id": "LC3_117",
       "name": "117",
       "floor": 1,
-      "x": 134,
-      "y": 514,
+      "x": 140,
+      "y": 521,
       "type": "room",
       "label": "ห้องบรรยายเรียนรวม"
     },
@@ -458,8 +338,8 @@
       "id": "LC3_116",
       "name": "116",
       "floor": 1,
-      "x": 128,
-      "y": 464,
+      "x": 134,
+      "y": 463,
       "type": "room",
       "label": "ห้องบรรยายเรียนรวม"
     },
@@ -468,7 +348,7 @@
       "name": "115",
       "floor": 1,
       "x": 133,
-      "y": 408,
+      "y": 398,
       "type": "room",
       "label": "ห้องสัมมนาทางคณิตศาสตร์และสถิติ"
     },
@@ -476,8 +356,8 @@
       "id": "LC3_141",
       "name": "141",
       "floor": 1,
-      "x": 749,
-      "y": 220,
+      "x": 735,
+      "y": 197,
       "type": "room",
       "label": "ห้องปฏิบัติการอิเล็กทรอนิกส์"
     },
@@ -485,8 +365,8 @@
       "id": "LC3_140",
       "name": "140",
       "floor": 1,
-      "x": 776,
-      "y": 137,
+      "x": 780,
+      "y": 135,
       "type": "room",
       "label": "ห้องปฏิบัติการอิเล็กทรอนิกส์"
     },
@@ -494,8 +374,8 @@
       "id": "LC3_139",
       "name": "139",
       "floor": 1,
-      "x": 798,
-      "y": 100,
+      "x": 801,
+      "y": 105,
       "type": "room",
       "label": "ห้องวิจัยฟิสิกส์"
     },
@@ -504,7 +384,7 @@
       "name": "138",
       "floor": 1,
       "x": 834,
-      "y": 126,
+      "y": 106,
       "type": "room",
       "label": "ห้องพักอาจารย์ (ฟิสิกส์)"
     },
@@ -513,7 +393,7 @@
       "name": "137/3",
       "floor": 1,
       "x": 887,
-      "y": 125,
+      "y": 105,
       "type": "room",
       "label": "ห้องวิจัยฟิสิกส์"
     },
@@ -521,8 +401,8 @@
       "id": "LC3_137/2",
       "name": "137/2",
       "floor": 1,
-      "x": 955,
-      "y": 129,
+      "x": 953,
+      "y": 105,
       "type": "room",
       "label": "ห้องวิจัยฟิสิกส์"
     },
@@ -530,8 +410,8 @@
       "id": "LC3_137/1",
       "name": "137/1",
       "floor": 1,
-      "x": 1015,
-      "y": 130,
+      "x": 1017,
+      "y": 104,
       "type": "room",
       "label": "ห้องวิจัยฟิสิกส์"
     },
@@ -539,80 +419,17 @@
       "id": "LC3_136",
       "name": "136",
       "floor": 1,
-      "x": 1115,
-      "y": 81,
-      "type": "room",
-      "label": "ห้องพักอาจารย์ (ฟิสิกส์)"
-    },
-    {
-      "id": "LC3_136/4",
-      "name": "136/4",
-      "floor": 1,
       "x": 1061,
-      "y": 69,
+      "y": 130,
       "type": "room",
       "label": "ห้องพักอาจารย์ (ฟิสิกส์)"
-    },
-    {
-      "id": "LC3_136/3",
-      "name": "136/3",
-      "floor": 1,
-      "x": 1064,
-      "y": 49,
-      "type": "room",
-      "label": "ห้องพักอาจารย์ (ฟิสิกส์)"
-    },
-    {
-      "id": "LC3_136/1",
-      "name": "136/1",
-      "floor": 1,
-      "x": 1153,
-      "y": 53,
-      "type": "room",
-      "label": "ห้องพักอาจารย์ (ฟิสิกส์)"
-    },
-    {
-      "id": "LC3_136/2",
-      "name": "136/2",
-      "floor": 1,
-      "x": 1166,
-      "y": 70,
-      "type": "room",
-      "label": "ห้องพักอาจารย์ (ฟิสิกส์)"
-    },
-    {
-      "id": "LC3_135/1",
-      "name": "135/1",
-      "floor": 1,
-      "x": 1103,
-      "y": 219,
-      "type": "room",
-      "label": "ห้องประชุม 135"
-    },
-    {
-      "id": "LC3_135/2",
-      "name": "135/2",
-      "floor": 1,
-      "x": 1155,
-      "y": 113,
-      "type": "room",
-      "label": "ห้องประชุม 135"
-    },
-    {
-      "id": "LC3_135/3",
-      "name": "135/3",
-      "floor": 1,
-      "x": 1094,
-      "y": 116,
-      "type": "room",
-      "label": "ห้องประชุม 135"
     },
     {
       "id": "LC3_130",
       "name": "130",
       "floor": 1,
-      "x": 1080,
-      "y": 373,
+      "x": 1083,
+      "y": 374,
       "type": "room",
       "label": "ห้องเก็บของ"
     },
@@ -620,8 +437,8 @@
       "id": "LC3_131",
       "name": "131",
       "floor": 1,
-      "x": 1102,
-      "y": 378,
+      "x": 1101,
+      "y": 374,
       "type": "room",
       "label": "ห้องเก็บของ"
     },
@@ -629,8 +446,8 @@
       "id": "LC3_132",
       "name": "132",
       "floor": 1,
-      "x": 1123,
-      "y": 409,
+      "x": 1139,
+      "y": 408,
       "type": "room",
       "label": "ห้องควบคุมไฟฟ้า"
     },
@@ -683,8 +500,8 @@
       "id": "LC3_123/1",
       "name": "123/1",
       "floor": 1,
-      "x": 889,
-      "y": 549,
+      "x": 888,
+      "y": 548,
       "type": "room",
       "label": "ห้องพักอาจารย์ (ฟิสิกส์)"
     },
@@ -693,7 +510,7 @@
       "name": "123",
       "floor": 1,
       "x": 884,
-      "y": 479,
+      "y": 482,
       "type": "room",
       "label": "ห้องพักอาจารย์ (ฟิสิกส์)"
     },
@@ -701,8 +518,8 @@
       "id": "LC3_121/5",
       "name": "121/5",
       "floor": 1,
-      "x": 804,
-      "y": 514,
+      "x": 807,
+      "y": 517,
       "type": "room",
       "label": "ห้องพักอาจารย์ (ฟิสิกส์)"
     },
@@ -710,8 +527,8 @@
       "id": "LC3_121/4",
       "name": "121/4",
       "floor": 1,
-      "x": 759,
-      "y": 514,
+      "x": 760,
+      "y": 519,
       "type": "room",
       "label": "ห้องโครงการให้คำปรึกษาทางสถิติเพื่อการวิจัย / ห้องสมาคมศิษย์เก่า คณะวิทยาศาสตร์และเทคโนโลยี"
     },
@@ -743,380 +560,28 @@
       "label": "ห้องเก็บของ"
     },
     {
-      "id": "LC3_hallway-16",
-      "name": "hallway-16",
-      "floor": 1,
-      "x": 1073,
-      "y": 663,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-17",
-      "name": "hallway-17",
-      "floor": 1,
-      "x": 837,
-      "y": 439,
-      "type": "junction"
-    },
-    {
       "id": "LC3_stair-1",
       "name": "stair-1",
       "floor": 1,
-      "x": 176,
-      "y": 321,
+      "x": 159,
+      "y": 341,
       "type": "stairs"
     },
     {
       "id": "LC3_stair-2",
       "name": "stair-2",
       "floor": 1,
-      "x": 620,
-      "y": 276,
+      "x": 623,
+      "y": 269,
       "type": "stairs"
     },
     {
       "id": "LC3_stair-3",
       "name": "stair-3",
       "floor": 1,
-      "x": 1085,
-      "y": 345,
+      "x": 1084,
+      "y": 324,
       "type": "stairs"
-    },
-    {
-      "id": "LC3_hallway-18",
-      "name": "hallway-18",
-      "floor": 1,
-      "x": 836,
-      "y": 549,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-19",
-      "name": "hallway-19",
-      "floor": 1,
-      "x": 630,
-      "y": 444,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-20",
-      "name": "hallway-20",
-      "floor": 1,
-      "x": 631,
-      "y": 482,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-21",
-      "name": "hallway-21",
-      "floor": 1,
-      "x": 186,
-      "y": 482,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-22",
-      "name": "hallway-22",
-      "floor": 1,
-      "x": 184,
-      "y": 345,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_hallway-23",
-      "name": "hallway-23",
-      "floor": 1,
-      "x": 157,
-      "y": 331,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_entry-1",
-      "name": "entry-1",
-      "floor": 1,
-      "x": 264,
-      "y": 116,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-2",
-      "name": "entry-2",
-      "floor": 1,
-      "x": 324,
-      "y": 116,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-3",
-      "name": "entry-3",
-      "floor": 1,
-      "x": 383,
-      "y": 116,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-4",
-      "name": "entry-4",
-      "floor": 1,
-      "x": 429,
-      "y": 116,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-5",
-      "name": "entry-5",
-      "floor": 1,
-      "x": 480,
-      "y": 116,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-6",
-      "name": "entry-6",
-      "floor": 1,
-      "x": 519,
-      "y": 116,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-7",
-      "name": "entry-7",
-      "floor": 1,
-      "x": 615,
-      "y": 212,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-8",
-      "name": "entry-8",
-      "floor": 1,
-      "x": 799,
-      "y": 220,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-9",
-      "name": "entry-9",
-      "floor": 1,
-      "x": 835,
-      "y": 160,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-10",
-      "name": "entry-10",
-      "floor": 1,
-      "x": 888,
-      "y": 160,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-11",
-      "name": "entry-11",
-      "floor": 1,
-      "x": 955,
-      "y": 161,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-12",
-      "name": "entry-12",
-      "floor": 1,
-      "x": 1015,
-      "y": 161,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-13",
-      "name": "entry-13",
-      "floor": 1,
-      "x": 1057,
-      "y": 220,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-14",
-      "name": "entry-14",
-      "floor": 1,
-      "x": 1058,
-      "y": 359,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-15",
-      "name": "entry-15",
-      "floor": 1,
-      "x": 1080,
-      "y": 359,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-16",
-      "name": "entry-16",
-      "floor": 1,
-      "x": 1102,
-      "y": 359,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-18",
-      "name": "entry-18",
-      "floor": 1,
-      "x": 1007,
-      "y": 466,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-19",
-      "name": "entry-19",
-      "floor": 1,
-      "x": 1046,
-      "y": 546,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-20",
-      "name": "entry-20",
-      "floor": 1,
-      "x": 1096,
-      "y": 546,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-21",
-      "name": "entry-21",
-      "floor": 1,
-      "x": 1136,
-      "y": 546,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-22",
-      "name": "entry-22",
-      "floor": 1,
-      "x": 837,
-      "y": 481,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-23",
-      "name": "entry-23",
-      "floor": 1,
-      "x": 804,
-      "y": 481,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-24",
-      "name": "entry-24",
-      "floor": 1,
-      "x": 759,
-      "y": 481,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-25",
-      "name": "entry-25",
-      "floor": 1,
-      "x": 533,
-      "y": 482,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-26",
-      "name": "entry-26",
-      "floor": 1,
-      "x": 476,
-      "y": 482,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-27",
-      "name": "entry-27",
-      "floor": 1,
-      "x": 410,
-      "y": 482,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-28",
-      "name": "entry-28",
-      "floor": 1,
-      "x": 335,
-      "y": 482,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-29",
-      "name": "entry-29",
-      "floor": 1,
-      "x": 309,
-      "y": 482,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-30",
-      "name": "entry-30",
-      "floor": 1,
-      "x": 290,
-      "y": 482,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-31",
-      "name": "entry-31",
-      "floor": 1,
-      "x": 268,
-      "y": 482,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-32",
-      "name": "entry-32",
-      "floor": 1,
-      "x": 244,
-      "y": 482,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-33",
-      "name": "entry-33",
-      "floor": 1,
-      "x": 221,
-      "y": 482,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-34",
-      "name": "entry-34",
-      "floor": 1,
-      "x": 185,
-      "y": 408,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-35",
-      "name": "entry-35",
-      "floor": 1,
-      "x": 183,
-      "y": 210,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-36",
-      "name": "entry-36",
-      "floor": 1,
-      "x": 182,
-      "y": 145,
-      "type": "entrance"
-    },
-    {
-      "id": "LC3_entry-17",
-      "name": "entry-17",
-      "floor": 1,
-      "x": 1124,
-      "y": 442,
-      "type": "entrance"
     },
     {
       "id": "LC3_F2_hallway-1",
@@ -1186,8 +651,8 @@
       "id": "LC3_F2_hallway-9",
       "name": "hallway-9",
       "floor": 2,
-      "x": 984,
-      "y": 173,
+      "x": 983,
+      "y": 172,
       "type": "junction"
     },
     {
@@ -1202,8 +667,8 @@
       "id": "LC3_F2_hallway-11",
       "name": "hallway-11",
       "floor": 2,
-      "x": 1026,
-      "y": 349,
+      "x": 1002,
+      "y": 338,
       "type": "junction"
     },
     {
@@ -1244,14 +709,6 @@
       "floor": 2,
       "x": 153,
       "y": 340,
-      "type": "junction"
-    },
-    {
-      "id": "LC3_F2_hallway-17",
-      "name": "hallway-17",
-      "floor": 2,
-      "x": 112,
-      "y": 348,
       "type": "junction"
     },
     {
@@ -1354,26 +811,10 @@
       "id": "LC3_F2_203",
       "name": "203",
       "floor": 2,
-      "x": 463,
-      "y": 195,
+      "x": 462,
+      "y": 184,
       "type": "room",
       "label": "ห้องปฏิบัติการระบบบำบัดน้ำเสีย"
-    },
-    {
-      "id": "LC3_F2_202/2",
-      "name": "202/2",
-      "floor": 2,
-      "x": 434,
-      "y": 258,
-      "type": "room"
-    },
-    {
-      "id": "LC3_F2_202/1",
-      "name": "202/1",
-      "floor": 2,
-      "x": 485,
-      "y": 258,
-      "type": "room"
     },
     {
       "id": "LC3_F2_201",
@@ -1451,8 +892,8 @@
       "id": "LC3_F2_236/3",
       "name": "236/3",
       "floor": 2,
-      "x": 986,
-      "y": 127,
+      "x": 982,
+      "y": 131,
       "type": "room",
       "label": "ห้องสำนักงานภาควิชาวิทยาศาสตร์สิ่งแวดล้อม"
     },
@@ -1536,15 +977,6 @@
       "y": 392,
       "type": "room",
       "label": "ห้องเก็บของ"
-    },
-    {
-      "id": "LC3_F2_242",
-      "name": "242",
-      "floor": 2,
-      "x": 676,
-      "y": 263,
-      "type": "room",
-      "label": "ห้องปฏิบัติการเครื่องมือ GC/HPLC"
     },
     {
       "id": "LC3_F2_243/1",
@@ -1766,8 +1198,8 @@
       "id": "LC3_F2_stair-1",
       "name": "stair-1",
       "floor": 2,
-      "x": 127,
-      "y": 358,
+      "x": 132,
+      "y": 341,
       "type": "stairs"
     },
     {
@@ -1782,8 +1214,8 @@
       "id": "LC3_F2_stair-3",
       "name": "stair-3",
       "floor": 2,
-      "x": 1011,
-      "y": 355,
+      "x": 1015,
+      "y": 338,
       "type": "stairs"
     },
     {
@@ -1814,7 +1246,7 @@
       "id": "LC3_F2_entry-4",
       "name": "entry-4",
       "floor": 2,
-      "x": 464,
+      "x": 462,
       "y": 235,
       "type": "entrance"
     },
@@ -2043,758 +1475,706 @@
       "type": "entrance"
     },
     {
-      "id": "LC3_entry-37",
-      "name": "entry-37",
+      "id": "LC3_entry_101",
+      "name": "entry_101",
       "floor": 1,
-      "x": 663,
-      "y": 264,
+      "x": 621,
+      "y": 211,
       "type": "entrance"
     },
     {
-      "id": "LC3_entry-38",
-      "name": "entry-38",
+      "id": "LC3_entry_102/1",
+      "name": "entry_102/1",
+      "floor": 1,
+      "x": 518,
+      "y": 117,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_102/2",
+      "name": "entry_102/2",
+      "floor": 1,
+      "x": 486,
+      "y": 117,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_103",
+      "name": "entry_103",
+      "floor": 1,
+      "x": 439,
+      "y": 117,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_101/2",
+      "name": "entry_101/2",
+      "floor": 1,
+      "x": 422,
+      "y": 117,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_101/1,104",
+      "name": "entry_101/1,104",
+      "floor": 1,
+      "x": 378,
+      "y": 116,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_104/1,105",
+      "name": "entry_104/1,105",
+      "floor": 1,
+      "x": 325,
+      "y": 116,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_106",
+      "name": "entry_106",
+      "floor": 1,
+      "x": 277,
+      "y": 116,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_107",
+      "name": "entry_107",
+      "floor": 1,
+      "x": 251,
+      "y": 116,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_108",
+      "name": "entry_108",
+      "floor": 1,
+      "x": 216,
+      "y": 116,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_108/1,109",
+      "name": "entry_108/1,109",
+      "floor": 1,
+      "x": 172,
+      "y": 91,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_110",
+      "name": "entry_110",
+      "floor": 1,
+      "x": 190,
+      "y": 145,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_111",
+      "name": "entry_111",
+      "floor": 1,
+      "x": 190,
+      "y": 209,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_TLLM",
+      "name": "entry_TLLM",
+      "floor": 1,
+      "x": 191,
+      "y": 307,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_TLLF",
+      "name": "entry_TLLF",
+      "floor": 1,
+      "x": 191,
+      "y": 356,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_105",
+      "name": "entry_105",
+      "floor": 1,
+      "x": 191,
+      "y": 397,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_116",
+      "name": "entry_116",
+      "floor": 1,
+      "x": 192,
+      "y": 462,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_117",
+      "name": "entry_117",
+      "floor": 1,
+      "x": 170,
+      "y": 521,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_118,119",
+      "name": "entry_118,119",
+      "floor": 1,
+      "x": 219,
+      "y": 483,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_119/1",
+      "name": "entry_119/1",
+      "floor": 1,
+      "x": 246,
+      "y": 483,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_118/1,119/2",
+      "name": "entry_118/1,119/2",
+      "floor": 1,
+      "x": 269,
+      "y": 483,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_119/3",
+      "name": "entry_119/3",
+      "floor": 1,
+      "x": 290,
+      "y": 483,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_119/4",
+      "name": "entry_119/4",
+      "floor": 1,
+      "x": 312,
+      "y": 483,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_119/5,120",
+      "name": "entry_119/5,120",
+      "floor": 1,
+      "x": 332,
+      "y": 483,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_121,122",
+      "name": "entry_121,122",
+      "floor": 1,
+      "x": 406,
+      "y": 482,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_122/1,122/2",
+      "name": "entry_122/1,122/2",
+      "floor": 1,
+      "x": 478,
+      "y": 461,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_121/1,121/2",
+      "name": "entry_121/1,121/2",
+      "floor": 1,
+      "x": 478,
+      "y": 508,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_122/2-5",
+      "name": "entry_122/2-5",
+      "floor": 1,
+      "x": 536,
+      "y": 462,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_121/3",
+      "name": "entry_121/3",
+      "floor": 1,
+      "x": 527,
+      "y": 508,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_122/6",
+      "name": "entry_122/6",
+      "floor": 1,
+      "x": 594,
+      "y": 462,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_121/4",
+      "name": "entry_121/4",
+      "floor": 1,
+      "x": 760,
+      "y": 482,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_121/5",
+      "name": "entry_121/5",
+      "floor": 1,
+      "x": 806,
+      "y": 482,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_123",
+      "name": "entry_123",
+      "floor": 1,
+      "x": 838,
+      "y": 482,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_123/1",
+      "name": "entry_123/1",
+      "floor": 1,
+      "x": 838,
+      "y": 547,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_124/2",
+      "name": "entry_124/2",
+      "floor": 1,
+      "x": 1007,
+      "y": 466,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_127",
+      "name": "entry_127",
+      "floor": 1,
+      "x": 1049,
+      "y": 548,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_128",
+      "name": "entry_128",
+      "floor": 1,
+      "x": 1093,
+      "y": 548,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_129",
+      "name": "entry_129",
+      "floor": 1,
+      "x": 1138,
+      "y": 549,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_125,126",
+      "name": "entry_125,126",
+      "floor": 1,
+      "x": 1073,
+      "y": 663,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_132",
+      "name": "entry_132",
+      "floor": 1,
+      "x": 1139,
+      "y": 442,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_130",
+      "name": "entry_130",
+      "floor": 1,
+      "x": 1083,
+      "y": 359,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_131",
+      "name": "entry_131",
+      "floor": 1,
+      "x": 1101,
+      "y": 359,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_135/1",
+      "name": "entry_135/1",
+      "floor": 1,
+      "x": 1055,
+      "y": 224,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_136",
+      "name": "entry_136",
+      "floor": 1,
+      "x": 1058,
+      "y": 165,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_137/1",
+      "name": "entry_137/1",
+      "floor": 1,
+      "x": 1018,
+      "y": 165,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_137/2",
+      "name": "entry_137/2",
+      "floor": 1,
+      "x": 954,
+      "y": 163,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_137/3",
+      "name": "entry_137/3",
+      "floor": 1,
+      "x": 889,
+      "y": 164,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_138",
+      "name": "entry_138",
+      "floor": 1,
+      "x": 834,
+      "y": 164,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_139,140",
+      "name": "entry_139,140",
+      "floor": 1,
+      "x": 802,
+      "y": 135,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_entry_141",
+      "name": "entry_141",
+      "floor": 1,
+      "x": 793,
+      "y": 197,
+      "type": "entrance"
+    },
+    {
+      "id": "LC3_Junction_NL1",
+      "name": "Junction_NL1",
+      "floor": 1,
+      "x": 172,
+      "y": 116,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_NL2",
+      "name": "Junction_NL2",
+      "floor": 1,
+      "x": 190,
+      "y": 116,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_LStair",
+      "name": "Junction_LStair",
+      "floor": 1,
+      "x": 191,
+      "y": 341,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_SL1",
+      "name": "Junction_SL1",
+      "floor": 1,
+      "x": 170,
+      "y": 483,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_SL2",
+      "name": "Junction_SL2",
+      "floor": 1,
+      "x": 192,
+      "y": 483,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_SM1",
+      "name": "Junction_SM1",
+      "floor": 1,
+      "x": 478,
+      "y": 482,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_SM2",
+      "name": "Junction_SM2",
+      "floor": 1,
+      "x": 530,
+      "y": 482,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_SM3",
+      "name": "Junction_SM3",
+      "floor": 1,
+      "x": 594,
+      "y": 482,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_SM4",
+      "name": "Junction_SM4",
+      "floor": 1,
+      "x": 838,
+      "y": 440,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_SR2",
+      "name": "Junction_SR2",
+      "floor": 1,
+      "x": 1006,
+      "y": 440,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_SR1",
+      "name": "Junction_SR1",
+      "floor": 1,
+      "x": 1053,
+      "y": 439,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_TLRM",
+      "name": "Junction_TLRM",
+      "floor": 1,
+      "x": 1055,
+      "y": 359,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_RStair",
+      "name": "Junction_RStair",
+      "floor": 1,
+      "x": 1054,
+      "y": 324,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_135",
+      "name": "135",
+      "floor": 1,
+      "x": 1126,
+      "y": 224,
+      "type": "room"
+    },
+    {
+      "id": "LC3_Junction_SR3",
+      "name": "Junction_SR3",
+      "floor": 1,
+      "x": 956,
+      "y": 439,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_RRoundabout",
+      "name": "Junction_RRoundabout",
+      "floor": 1,
+      "x": 956,
+      "y": 332,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_RRoundabout1",
+      "name": "Junction_RRoundabout1",
+      "floor": 1,
+      "x": 869,
+      "y": 333,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_RRoundabout2",
+      "name": "Junction_RRoundabout2",
+      "floor": 1,
+      "x": 869,
+      "y": 284,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_NM1",
+      "name": "Junction_NM1",
+      "floor": 1,
+      "x": 620,
+      "y": 117,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_NM2",
+      "name": "Junction_NM2",
+      "floor": 1,
+      "x": 621,
+      "y": 247,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_NM3",
+      "name": "Junction_NM3",
+      "floor": 1,
+      "x": 640,
+      "y": 247,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_NM4",
+      "name": "Junction_NM4",
+      "floor": 1,
+      "x": 640,
+      "y": 292,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_MStair",
+      "name": "Junction_MStair",
+      "floor": 1,
+      "x": 623,
+      "y": 292,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_MidBridge",
+      "name": "Junction_MidBridge",
+      "floor": 1,
+      "x": 632,
+      "y": 292,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_SM",
+      "name": "Junction_SM",
+      "floor": 1,
+      "x": 633,
+      "y": 482,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_RRoundabout3",
+      "name": "Junction_RRoundabout3",
+      "floor": 1,
+      "x": 1054,
+      "y": 334,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_NM5",
+      "name": "Junction_NM5",
       "floor": 1,
       "x": 663,
-      "y": 295,
-      "type": "entrance"
+      "y": 247,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_NM6",
+      "name": "Junction_NM6",
+      "floor": 1,
+      "x": 663,
+      "y": 282,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_NM7",
+      "name": "Junction_NM7",
+      "floor": 1,
+      "x": 792,
+      "y": 283,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_NR1",
+      "name": "Junction_NR1",
+      "floor": 1,
+      "x": 799,
+      "y": 165,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_TLRF",
+      "name": "Junction_TLRF",
+      "floor": 1,
+      "x": 1054,
+      "y": 308,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_RMToilet",
+      "name": "RMToilet",
+      "floor": 1,
+      "x": 1142,
+      "y": 359,
+      "type": "facility"
+    },
+    {
+      "id": "LC3_RFToilet",
+      "name": "RFToilet",
+      "floor": 1,
+      "x": 1142,
+      "y": 309,
+      "type": "facility"
+    },
+    {
+      "id": "LC3_LMToilet",
+      "name": "LMToilet",
+      "floor": 1,
+      "x": 117,
+      "y": 307,
+      "type": "facility"
+    },
+    {
+      "id": "LC3_LFToilet",
+      "name": "LFToilet",
+      "floor": 1,
+      "x": 118,
+      "y": 357,
+      "type": "facility"
+    },
+    {
+      "id": "LC3_Junction_SR4",
+      "name": "Junction_SR4",
+      "floor": 1,
+      "x": 1009,
+      "y": 548,
+      "type": "junction"
+    },
+    {
+      "id": "LC3_Junction_SR5",
+      "name": "Junction_SR5",
+      "floor": 1,
+      "x": 1072,
+      "y": 548,
+      "type": "junction"
     }
   ],
   "edges": [
     {
-      "from": "LC3_hallway-1",
-      "to": "LC3_entry-1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-1",
-      "to": "LC3_entry-2",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-2",
-      "to": "LC3_entry-3",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-3",
-      "to": "LC3_entry-4",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-4",
-      "to": "LC3_entry-5",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-5",
-      "to": "LC3_entry-6",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-6",
-      "to": "LC3_hallway-2",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-2",
-      "to": "LC3_entry-7",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-7",
-      "to": "LC3_hallway-3",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-3",
-      "to": "LC3_hallway-4",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-4",
-      "to": "LC3_hallway-5",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-5",
-      "to": "LC3_stair-2",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-5",
-      "to": "LC3_hallway-19",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-6",
-      "to": "LC3_entry-8",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-8",
-      "to": "LC3_hallway-7",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-7",
-      "to": "LC3_entry-9",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-9",
-      "to": "LC3_entry-10",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-10",
-      "to": "LC3_entry-11",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-11",
-      "to": "LC3_entry-12",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-12",
-      "to": "LC3_hallway-8",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-8",
-      "to": "LC3_entry-13",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-13",
-      "to": "LC3_hallway-9",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-9",
-      "to": "LC3_hallway-10",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-10",
-      "to": "LC3_hallway-11",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-11",
-      "to": "LC3_stair-3",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-10",
-      "to": "LC3_entry-14",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-15",
-      "to": "LC3_entry-14",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-15",
-      "to": "LC3_entry-16",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-14",
-      "to": "LC3_hallway-12",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-12",
-      "to": "LC3_hallway-13",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-13",
-      "to": "LC3_entry-18",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-18",
-      "to": "LC3_hallway-14",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-14",
-      "to": "LC3_entry-19",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-19",
-      "to": "LC3_hallway-15",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-15",
-      "to": "LC3_entry-20",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-15",
-      "to": "LC3_hallway-16",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-20",
-      "to": "LC3_entry-21",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-13",
-      "to": "LC3_hallway-17",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-17",
-      "to": "LC3_entry-22",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-22",
-      "to": "LC3_hallway-18",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-22",
-      "to": "LC3_entry-23",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-23",
-      "to": "LC3_entry-24",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-24",
-      "to": "LC3_hallway-20",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-19",
-      "to": "LC3_hallway-20",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-20",
-      "to": "LC3_entry-25",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-25",
-      "to": "LC3_entry-26",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-26",
-      "to": "LC3_entry-27",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-27",
-      "to": "LC3_entry-28",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-28",
-      "to": "LC3_entry-29",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-29",
-      "to": "LC3_entry-30",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-30",
-      "to": "LC3_entry-31",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-31",
-      "to": "LC3_entry-32",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-32",
-      "to": "LC3_entry-33",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-33",
-      "to": "LC3_hallway-21",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-21",
-      "to": "LC3_entry-34",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-34",
-      "to": "LC3_hallway-22",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-22",
-      "to": "LC3_hallway-23",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-23",
-      "to": "LC3_stair-1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-35",
-      "to": "LC3_hallway-22",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-36",
-      "to": "LC3_entry-35",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-36",
-      "to": "LC3_hallway-1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-1",
-      "to": "LC3_108/1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-1",
-      "to": "LC3_109",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-1",
-      "to": "LC3_108",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-1",
-      "to": "LC3_107",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-1",
-      "to": "LC3_106",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-2",
-      "to": "LC3_105",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-2",
-      "to": "LC3_104/1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-3",
-      "to": "LC3_101/1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-3",
-      "to": "LC3_104",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-4",
-      "to": "LC3_101/2",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-4",
-      "to": "LC3_103",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-5",
-      "to": "LC3_102/2",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-6",
-      "to": "LC3_102/1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-7",
-      "to": "LC3_101",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-8",
-      "to": "LC3_141",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-7",
-      "to": "LC3_139",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-7",
-      "to": "LC3_140",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-9",
-      "to": "LC3_138",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-10",
-      "to": "LC3_137/3",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-11",
-      "to": "LC3_137/2",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-12",
-      "to": "LC3_137/1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-13",
-      "to": "LC3_135/1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-15",
-      "to": "LC3_130",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-16",
-      "to": "LC3_131",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-20",
-      "to": "LC3_128",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-19",
-      "to": "LC3_127",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-21",
-      "to": "LC3_129",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-16",
-      "to": "LC3_126",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-16",
-      "to": "LC3_125",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-18",
-      "to": "LC3_124/2",
-      "type": "walk",
-      "distance": 0
-    },
-    {
       "from": "LC3_124/2",
       "to": "LC3_124/1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-22",
-      "to": "LC3_123",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-18",
-      "to": "LC3_123/1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-23",
-      "to": "LC3_121/5",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-24",
-      "to": "LC3_121/4",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-19",
-      "to": "LC3_122/6",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-25",
-      "to": "LC3_122/2",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-25",
-      "to": "LC3_122/3",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-25",
-      "to": "LC3_122/4",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-25",
-      "to": "LC3_122/5",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-25",
-      "to": "LC3_121/3",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-25",
-      "to": "LC3_121/2",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-26",
-      "to": "LC3_122/1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-26",
-      "to": "LC3_121/1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-27",
-      "to": "LC3_121",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-27",
-      "to": "LC3_122",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-28",
-      "to": "LC3_120",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-28",
-      "to": "LC3_119/5",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-29",
-      "to": "LC3_119/4",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-30",
-      "to": "LC3_118/1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-30",
-      "to": "LC3_119/3",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-31",
-      "to": "LC3_119/2",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-32",
-      "to": "LC3_119/1",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-33",
-      "to": "LC3_118",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-33",
-      "to": "LC3_119",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_117",
-      "to": "LC3_hallway-21",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-21",
-      "to": "LC3_116",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-34",
-      "to": "LC3_115",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-35",
-      "to": "LC3_111",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-36",
-      "to": "LC3_110",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_hallway-12",
-      "to": "LC3_entry-17",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_entry-17",
-      "to": "LC3_132",
       "type": "walk",
       "distance": 0
     },
@@ -3041,18 +2421,6 @@
     {
       "from": "LC3_F2_hallway-15",
       "to": "LC3_F2_hallway-16",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_F2_hallway-16",
-      "to": "LC3_F2_hallway-17",
-      "type": "walk",
-      "distance": 0
-    },
-    {
-      "from": "LC3_F2_hallway-17",
-      "to": "LC3_F2_stair-1",
       "type": "walk",
       "distance": 0
     },
@@ -3477,40 +2845,880 @@
       "distance": 0
     },
     {
-      "from": "LC3_hallway-4",
-      "to": "LC3_entry-37",
-      "type": "walk",
-      "distance": 0
+      "from": "LC3_stair-1",
+      "to": "LC3_F2_stair-1",
+      "type": "stairs"
     },
     {
-      "from": "LC3_entry-37",
-      "to": "LC3_entry-38",
-      "type": "walk",
-      "distance": 0
+      "from": "LC3_stair-2",
+      "to": "LC3_F2_stair-2",
+      "type": "stairs"
     },
     {
-      "from": "LC3_entry-38",
-      "to": "LC3_hallway-6",
+      "from": "LC3_stair-3",
+      "to": "LC3_F2_stair-3",
+      "type": "stairs"
+    },
+    {
+      "from": "LC3_F2_210/1",
+      "to": "LC3_F2_211/1",
       "type": "walk",
       "distance": 0
     },
     {
       "from": "LC3_stair-1",
       "to": "LC3_F2_stair-1",
-      "type": "stairs",
-      "distance": 50
+      "type": "stairs"
     },
     {
       "from": "LC3_stair-2",
       "to": "LC3_F2_stair-2",
-      "type": "stairs",
-      "distance": 50
+      "type": "stairs"
     },
     {
       "from": "LC3_stair-3",
       "to": "LC3_F2_stair-3",
-      "type": "stairs",
-      "distance": 50
+      "type": "stairs"
+    },
+    {
+      "from": "LC3_Junction_LStair",
+      "to": "LC3_stair-1",
+      "type": "up",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_RStair",
+      "to": "LC3_stair-3",
+      "type": "up",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SM",
+      "to": "LC3_Junction_SM3",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SM3",
+      "to": "LC3_entry_122/6",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SM3",
+      "to": "LC3_Junction_SM2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SM2",
+      "to": "LC3_entry_122/2-5",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SM2",
+      "to": "LC3_entry_121/3",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SM2",
+      "to": "LC3_Junction_SM1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SM1",
+      "to": "LC3_entry_122/1,122/2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SM1",
+      "to": "LC3_entry_121/1,121/2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SM1",
+      "to": "LC3_entry_121,122",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_121,122",
+      "to": "LC3_122",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_121,122",
+      "to": "LC3_121",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_121,122",
+      "to": "LC3_entry_119/5,120",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_119/5,120",
+      "to": "LC3_119/5",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_119/5,120",
+      "to": "LC3_120",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_119/5,120",
+      "to": "LC3_entry_119/4",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_119/4",
+      "to": "LC3_119/4",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_119/4",
+      "to": "LC3_entry_119/3",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_119/3",
+      "to": "LC3_119/3",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_119/3",
+      "to": "LC3_entry_118/1,119/2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_118/1,119/2",
+      "to": "LC3_119/2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_118/1,119/2",
+      "to": "LC3_118/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_118/1,119/2",
+      "to": "LC3_entry_119/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_119/1",
+      "to": "LC3_119/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_119/1",
+      "to": "LC3_entry_118,119",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_118,119",
+      "to": "LC3_119",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_118,119",
+      "to": "LC3_118",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_118,119",
+      "to": "LC3_Junction_SL2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SL2",
+      "to": "LC3_Junction_SL1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SL1",
+      "to": "LC3_entry_117",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_117",
+      "to": "LC3_117",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SL2",
+      "to": "LC3_entry_116",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_116",
+      "to": "LC3_116",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_116",
+      "to": "LC3_entry_105",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_105",
+      "to": "LC3_115",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_105",
+      "to": "LC3_entry_TLLF",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_TLLF",
+      "to": "LC3_LFToilet",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_TLLF",
+      "to": "LC3_Junction_LStair",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_LStair",
+      "to": "LC3_entry_TLLM",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_TLLM",
+      "to": "LC3_LMToilet",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_TLLM",
+      "to": "LC3_entry_111",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_111",
+      "to": "LC3_111",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_111",
+      "to": "LC3_entry_110",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_110",
+      "to": "LC3_110",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_110",
+      "to": "LC3_Junction_NL2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NL2",
+      "to": "LC3_Junction_NL1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NL1",
+      "to": "LC3_entry_108/1,109",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_108/1,109",
+      "to": "LC3_109",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_108/1,109",
+      "to": "LC3_108/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NL2",
+      "to": "LC3_entry_108",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_108",
+      "to": "LC3_108",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_108",
+      "to": "LC3_entry_107",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_107",
+      "to": "LC3_107",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_107",
+      "to": "LC3_entry_106",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_106",
+      "to": "LC3_106",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_106",
+      "to": "LC3_entry_104/1,105",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_104/1,105",
+      "to": "LC3_104/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_104/1,105",
+      "to": "LC3_105",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_104/1,105",
+      "to": "LC3_entry_101/1,104",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_101/1,104",
+      "to": "LC3_104",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_101/1,104",
+      "to": "LC3_101/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_101/1,104",
+      "to": "LC3_entry_101/2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_101/2",
+      "to": "LC3_101/2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_101/2",
+      "to": "LC3_entry_103",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_103",
+      "to": "LC3_103",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_103",
+      "to": "LC3_entry_102/2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_102/2",
+      "to": "LC3_102/2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_102/2",
+      "to": "LC3_entry_102/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_102/1",
+      "to": "LC3_102/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_102/1",
+      "to": "LC3_Junction_NM1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NM1",
+      "to": "LC3_entry_101",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_101",
+      "to": "LC3_101",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_101",
+      "to": "LC3_Junction_NM2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NM2",
+      "to": "LC3_Junction_NM3",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NM3",
+      "to": "LC3_Junction_NM5",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NM5",
+      "to": "LC3_Junction_NM6",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NM3",
+      "to": "LC3_Junction_NM4",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NM4",
+      "to": "LC3_Junction_MidBridge",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_MidBridge",
+      "to": "LC3_Junction_MStair",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_MStair",
+      "to": "LC3_stair-2",
+      "type": "up",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_MidBridge",
+      "to": "LC3_Junction_SM",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NM6",
+      "to": "LC3_Junction_NM7",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NM7",
+      "to": "LC3_entry_141",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_141",
+      "to": "LC3_Junction_NR1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_141",
+      "to": "LC3_141",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NR1",
+      "to": "LC3_entry_139,140",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_139,140",
+      "to": "LC3_140",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_139,140",
+      "to": "LC3_139",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_NR1",
+      "to": "LC3_entry_138",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_138",
+      "to": "LC3_138",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_138",
+      "to": "LC3_entry_137/3",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_137/3",
+      "to": "LC3_137/3",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_137/3",
+      "to": "LC3_entry_137/2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_137/2",
+      "to": "LC3_137/2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_137/2",
+      "to": "LC3_entry_137/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_137/1",
+      "to": "LC3_137/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_137/1",
+      "to": "LC3_entry_136",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_136",
+      "to": "LC3_136",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_136",
+      "to": "LC3_entry_135/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_135/1",
+      "to": "LC3_135",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_135/1",
+      "to": "LC3_Junction_TLRF",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_TLRF",
+      "to": "LC3_Junction_RStair",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_RStair",
+      "to": "LC3_Junction_RRoundabout3",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_RRoundabout3",
+      "to": "LC3_Junction_TLRM",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_TLRM",
+      "to": "LC3_entry_130",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_130",
+      "to": "LC3_130",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_130",
+      "to": "LC3_entry_131",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_131",
+      "to": "LC3_131",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_TLRF",
+      "to": "LC3_RFToilet",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_131",
+      "to": "LC3_RMToilet",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_TLRM",
+      "to": "LC3_Junction_SR1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SR1",
+      "to": "LC3_entry_132",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_132",
+      "to": "LC3_132",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SR1",
+      "to": "LC3_Junction_SR2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_124/2",
+      "to": "LC3_Junction_SR2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_124/2",
+      "to": "LC3_124/2",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_124/2",
+      "to": "LC3_Junction_SR4",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SR4",
+      "to": "LC3_entry_127",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_127",
+      "to": "LC3_127",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_127",
+      "to": "LC3_Junction_SR5",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SR5",
+      "to": "LC3_entry_128",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_128",
+      "to": "LC3_entry_129",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_129",
+      "to": "LC3_129",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_128",
+      "to": "LC3_128",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SR5",
+      "to": "LC3_entry_125,126",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_125,126",
+      "to": "LC3_126",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_125,126",
+      "to": "LC3_125",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SR2",
+      "to": "LC3_Junction_SR3",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SR3",
+      "to": "LC3_Junction_SM4",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_Junction_SM4",
+      "to": "LC3_entry_123",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_123",
+      "to": "LC3_entry_123/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_123",
+      "to": "LC3_entry_121/5",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_121/5",
+      "to": "LC3_entry_121/4",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_121/4",
+      "to": "LC3_121/4",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_121/5",
+      "to": "LC3_121/5",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_123/1",
+      "to": "LC3_123/1",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_123",
+      "to": "LC3_123",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_entry_121/4",
+      "to": "LC3_Junction_SM",
+      "type": "walk",
+      "distance": 0
+    },
+    {
+      "from": "LC3_F2_hallway-16",
+      "to": "LC3_F2_stair-1",
+      "type": "down",
+      "distance": 0
     }
   ]
 }
