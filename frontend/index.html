@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Indoor Navigation Dashboard</title>
     <link rel="stylesheet" href="index.css">
     
@@ -11,14 +11,14 @@
 </head>
 <body>
     <!-- Search Interface -->
-    <div class="search-panel">
+    <div class="search-panel" id="search-panel">
         <div class="search-flex">
-            <h1 class="compact-title">Indoor Wayfinder</h1>
+            <h1 class="compact-title" data-i18n="title">Indoor Wayfinder</h1>
             
             <div class="input-group">
                 <div class="input-wrapper">
                     <div class="input-box">
-                        <span class="tiny-label">FROM:</span>
+                        <span class="tiny-label" data-i18n="from">FROM:</span>
                         <input type="text" id="start-query" placeholder="101" autocomplete="off">
                     </div>
                     <div class="suggestion-list" id="start-suggestions"></div>
@@ -26,14 +26,14 @@
                 
                 <div class="input-wrapper">
                     <div class="input-box">
-                        <span class="tiny-label">TO:</span>
+                        <span class="tiny-label" data-i18n="to">TO:</span>
                         <input type="text" id="goal-query" placeholder="204" autocomplete="off">
                     </div>
                     <div class="suggestion-list" id="goal-suggestions"></div>
                 </div>
                 
-                <button id="btn-navigate" onclick="navigateUser(event)">Navigate</button>
-                <button id="btn-share" class="btn-share" onclick="shareRoute()">📤 Share</button>
+                <button id="btn-navigate" onclick="navigateUser(event)" data-i18n="navigate">Navigate</button>
+                <button id="btn-share" class="btn-share" onclick="shareRoute()">📤 <span data-i18n="share">Share</span></button>
             </div>
         </div>
     </div>
@@ -41,30 +41,50 @@
     <!-- Feedback Layer -->
     <div class="toast-container" id="toast-container"></div>
 
+    <!-- Control HUD -->
+    <div class="control-hud" id="control-hud">
+        <button class="hud-btn" id="btn-reset" onclick="resetNavigation()" title="Reset">
+            <span class="hud-icon">↺</span>
+            <span class="hud-label" data-i18n="reset">Reset</span>
+        </button>
+        <div class="hud-divider"></div>
+        <button class="hud-btn" id="btn-lang" onclick="toggleLanguage()" title="Language">
+            <span class="hud-icon">🌐</span>
+            <span class="hud-label" id="lang-label">EN</span>
+        </button>
+        <div class="hud-divider"></div>
+        <button class="hud-btn" id="btn-theme" onclick="toggleTheme()" title="Theme">
+            <span class="hud-icon" id="theme-icon">🌙</span>
+            <span class="hud-label" id="theme-label" data-i18n="dark">Dark</span>
+        </button>
+    </div>
+
     <!-- Active Floor Tracker -->
     <div class="tracker-status" id="tracker-status">
-        <div class="floor-badge active" id="badge-floor-1">Floor 1</div>
-        <div class="floor-badge" id="badge-floor-2">Floor 2</div>
+        <div class="floor-badge active" id="badge-floor-1" data-i18n="floor1">Floor 1</div>
+        <div class="floor-badge" id="badge-floor-2" data-i18n="floor2">Floor 2</div>
     </div>
 
     <!-- Mapping Engine -->
     <div class="map-arena" id="map-arena">
+        <div class="map-viewport" id="map-viewport">
         
-        <!-- Floor 1 Container -->
-        <div class="map-layer active" id="layer-floor-1">
-            <img src="LC3-MAP-1stFloor.svg" alt="Floor 1" class="map-image" id="img-floor-1" width="1217" height="742">
-            <canvas id="canvas-floor-1" width="1217" height="742"></canvas>
-        </div>
+            <!-- Floor 1 Container -->
+            <div class="map-layer active" id="layer-floor-1">
+                <img src="LC3-MAP-1stFloor.svg" alt="Floor 1" class="map-image" id="img-floor-1" width="1217" height="742">
+                <canvas id="canvas-floor-1" width="1217" height="742"></canvas>
+            </div>
 
-        <!-- Floor 2 Container -->
-        <div class="map-layer" id="layer-floor-2">
-            <img src="LC3-MAP-2ndFloor.svg" alt="Floor 2" class="map-image" id="img-floor-2" width="1152" height="766">
-            <canvas id="canvas-floor-2" width="1152" height="766"></canvas>
-        </div>
+            <!-- Floor 2 Container -->
+            <div class="map-layer" id="layer-floor-2">
+                <img src="LC3-MAP-2ndFloor.svg" alt="Floor 2" class="map-image" id="img-floor-2" width="1152" height="766">
+                <canvas id="canvas-floor-2" width="1152" height="766"></canvas>
+            </div>
 
+        </div>
     </div>
 
-    <!-- Step-by-Step Directions Panel -->
+    <!-- Step-by-Step Directions Panel (in document flow, below map) -->
     <div id="directions-container" class="directions-container"></div>
 
     <script src="app.js"></script>
