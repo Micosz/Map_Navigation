@@ -16,17 +16,24 @@
             <h1 class="compact-title">Indoor Wayfinder</h1>
             
             <div class="input-group">
-                <div class="input-box">
-                    <span class="tiny-label">FROM:</span>
-                    <input type="text" id="start-query" placeholder="101" autocomplete="off">
+                <div class="input-wrapper">
+                    <div class="input-box">
+                        <span class="tiny-label">FROM:</span>
+                        <input type="text" id="start-query" placeholder="101" autocomplete="off">
+                    </div>
+                    <div class="suggestion-list" id="start-suggestions"></div>
                 </div>
                 
-                <div class="input-box">
-                    <span class="tiny-label">TO:</span>
-                    <input type="text" id="goal-query" placeholder="204" autocomplete="off">
+                <div class="input-wrapper">
+                    <div class="input-box">
+                        <span class="tiny-label">TO:</span>
+                        <input type="text" id="goal-query" placeholder="204" autocomplete="off">
+                    </div>
+                    <div class="suggestion-list" id="goal-suggestions"></div>
                 </div>
                 
-                <button onclick="navigateUser(event)">Navigate</button>
+                <button id="btn-navigate" onclick="navigateUser(event)">Navigate</button>
+                <button id="btn-share" class="btn-share" onclick="shareRoute()">📤 Share</button>
             </div>
         </div>
     </div>
@@ -56,6 +63,9 @@
         </div>
 
     </div>
+
+    <!-- Step-by-Step Directions Panel -->
+    <div id="directions-container" class="directions-container"></div>
 
     <script src="app.js"></script>
 </body>

@@ -17,7 +17,360 @@ class PriorityQueue {
     isEmpty() { return this.items.length === 0; }
 }
 
-// DOM Setup
+// =====================================================
+// SEARCH SUGGESTION SYSTEM
+// =====================================================
+
+// Allowlist of node types that are searchable (POI-ready)
+const SEARCHABLE_TYPES = ['room', 'stairs', 'toilet', 'elevator', 'cafe', 'lab', 'office'];
+
+// Type-to-icon mapping for search suggestions
+const TYPE_ICONS = {
+    room: '🚪',
+    stairs: '🪜',
+    toilet: '🚻',
+    elevator: '🛗',
+    cafe: '☕',
+    lab: '🔬',
+    office: '💼'
+};
+
+let cachedSearchTerms = null;
+
+/**
+ * Extract all searchable terms from graph data.
+ * Filters by SEARCHABLE_TYPES allowlist for POI extensibility.
+ */
+function extractSearchTerms(graphData) {
+    if (!graphData || !graphData.nodes) return [];
+
+    return graphData.nodes
+        .filter(n => SEARCHABLE_TYPES.includes(n.type))
+        .map(n => ({
+            name: n.name,
+            label: n.label || '',
+            type: n.type,
+            floor: n.floor,
+            id: n.id
+        }))
+        .sort((a, b) => {
+            // Sort rooms numerically, then alphabetically
+            const numA = parseFloat(a.name);
+            const numB = parseFloat(b.name);
+            if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+            return a.name.localeCompare(b.name);
+        });
+}
+
+/**
+ * Ensure graph data is loaded. Fetches via API if not already cached.
+ * Uses a dummy search query to retrieve the full graph payload.
+ */
+async function ensureGraphLoaded() {
+    if (globalGraphState) return globalGraphState;
+
+    try {
+        const baseUrl = window.API_SEARCH_ENDPOINT || 'http://localhost/search';
+        const res = await fetch(`${baseUrl}?search=101`, {
+            method: 'GET', mode: 'cors',
+            headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (data.graph && data.graph.nodes) {
+                globalGraphState = data.graph;
+                cachedSearchTerms = extractSearchTerms(globalGraphState);
+            }
+        }
+    } catch (e) {
+        console.warn('Graph pre-fetch failed:', e.message);
+    }
+    return globalGraphState;
+}
+
+/**
+ * Setup autocomplete for an input field.
+ * @param {string} inputId - The input element ID
+ * @param {string} listId - The suggestion list element ID
+ */
+function setupAutocomplete(inputId, listId) {
+    const input = document.getElementById(inputId);
+    const list = document.getElementById(listId);
+    let activeIndex = -1;
+
+    // Don't attach to readonly inputs (QR-locked)
+    if (input.readOnly) return;
+
+    // Pre-fetch graph on first focus
+    input.addEventListener('focus', async () => {
+        await ensureGraphLoaded();
+        // Show suggestions if there's already text
+        if (input.value.trim()) {
+            renderSuggestions(input, list);
+        }
+    });
+
+    // Real-time filtering on input
+    input.addEventListener('input', () => {
+        activeIndex = -1;
+        renderSuggestions(input, list);
+    });
+
+    // Keyboard navigation
+    input.addEventListener('keydown', (e) => {
+        const items = list.querySelectorAll('.suggestion-item');
+        if (!items.length) return;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            activeIndex = Math.min(activeIndex + 1, items.length - 1);
+            updateActiveItem(items, activeIndex);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            activeIndex = Math.max(activeIndex - 1, 0);
+            updateActiveItem(items, activeIndex);
+        } else if (e.key === 'Enter' && activeIndex >= 0) {
+            e.preventDefault();
+            items[activeIndex].click();
+        } else if (e.key === 'Escape') {
+            closeSuggestions(list);
+        }
+    });
+
+    // Close on blur (with delay to allow click)
+    input.addEventListener('blur', () => {
+        setTimeout(() => closeSuggestions(list), 200);
+    });
+}
+
+function renderSuggestions(input, list) {
+    const query = input.value.trim().toLowerCase();
+    list.innerHTML = '';
+    activeIndex = -1;
+
+    if (!query || !cachedSearchTerms) {
+        closeSuggestions(list);
+        return;
+    }
+
+    const matches = cachedSearchTerms.filter(term =>
+        term.name.toLowerCase().includes(query) ||
+        term.label.toLowerCase().includes(query)
+    ).slice(0, 8);
+
+    if (matches.length === 0) {
+        closeSuggestions(list);
+        return;
+    }
+
+    matches.forEach(term => {
+        const item = document.createElement('div');
+        item.className = 'suggestion-item';
+
+        const icon = TYPE_ICONS[term.type] || '📍';
+        item.innerHTML = `
+            <div class="room-name">
+                <span class="type-icon">${icon}</span>
+                ${term.name}
+                <span class="floor-tag">F${term.floor}</span>
+            </div>
+            ${term.label ? `<div class="room-label">${term.label}</div>` : ''}
+        `;
+
+        item.addEventListener('mousedown', (e) => {
+            e.preventDefault(); // Prevent blur from firing first
+            input.value = term.name;
+            closeSuggestions(list);
+            input.focus();
+        });
+
+        list.appendChild(item);
+    });
+
+    list.classList.add('active');
+}
+
+function closeSuggestions(list) {
+    list.classList.remove('active');
+    list.innerHTML = '';
+}
+
+function updateActiveItem(items, index) {
+    items.forEach((item, i) => {
+        item.classList.toggle('active', i === index);
+    });
+    if (items[index]) {
+        items[index].scrollIntoView({ block: 'nearest' });
+    }
+}
+
+// =====================================================
+// STEP-BY-STEP DIRECTION GENERATOR
+// =====================================================
+
+/**
+ * Analyze A* path and generate human-readable step-by-step instructions.
+ * Consolidates consecutive hallway/junction nodes into single "walk" steps.
+ */
+function generateInstructions(path) {
+    if (!path || path.length < 2) return '';
+
+    const steps = [];
+    const startNode = path[0];
+    const endNode = path[path.length - 1];
+
+    // Step 1: Start location
+    const startName = startNode.type === 'room'
+        ? `Room <span class="step-highlight">${startNode.name}</span>`
+        : `<span class="step-highlight">${startNode.name}</span>`;
+    const startLabel = startNode.label ? ` — ${startNode.label}` : '';
+    steps.push({
+        icon: '📍',
+        text: `Start at ${startName}${startLabel}`,
+        type: 'start'
+    });
+
+    // Analyze middle path
+    let i = 1;
+    while (i < path.length - 1) {
+        const node = path[i];
+        const prevNode = path[i - 1];
+
+        // Detect floor change
+        if (node.floor !== prevNode.floor) {
+            const stairName = prevNode.type === 'stairs' ? prevNode.name :
+                              node.type === 'stairs' ? node.name : 'stairs';
+            steps.push({
+                icon: '🪜',
+                text: `Take <span class="step-highlight">${stairName}</span> to <span class="step-highlight">Floor ${node.floor}</span>`,
+                type: 'stairs'
+            });
+            i++;
+            continue;
+        }
+
+        // Consolidate hallway/junction/entrance nodes
+        if (node.type === 'junction' || node.type === 'entrance' || node.type === 'walk') {
+            let walkEnd = i;
+            while (walkEnd < path.length - 1) {
+                const nextNode = path[walkEnd + 1];
+                if (nextNode.floor !== node.floor) break; // Floor change ahead
+                if (nextNode.type === 'room' || SEARCHABLE_TYPES.includes(nextNode.type) && nextNode.type !== 'stairs') break; // Reached a destination
+                if (nextNode.type === 'stairs') break; // Stairs ahead
+                walkEnd++;
+            }
+
+            steps.push({
+                icon: '🚶',
+                text: `Walk along the hallway on <span class="step-highlight">Floor ${node.floor}</span>`,
+                type: 'walk'
+            });
+            i = walkEnd + 1;
+            continue;
+        }
+
+        // Named POI along the way
+        if (SEARCHABLE_TYPES.includes(node.type) && node.type !== 'stairs') {
+            steps.push({
+                icon: TYPE_ICONS[node.type] || '📍',
+                text: `Pass by <span class="step-highlight">${node.name}</span>`,
+                type: 'walk'
+            });
+        }
+
+        i++;
+    }
+
+    // Step N: Destination
+    const endName = endNode.type === 'room'
+        ? `Room <span class="step-highlight">${endNode.name}</span>`
+        : `<span class="step-highlight">${endNode.name}</span>`;
+    const endLabel = endNode.label ? ` — ${endNode.label}` : '';
+    steps.push({
+        icon: '🏁',
+        text: `Arrive at ${endName}${endLabel}`,
+        type: 'end'
+    });
+
+    return steps;
+}
+
+/**
+ * Render the step-by-step directions into the panel.
+ */
+function renderDirections(steps) {
+    const container = document.getElementById('directions-container');
+    if (!steps || steps.length === 0) {
+        container.classList.remove('active');
+        return;
+    }
+
+    let html = `
+        <div class="directions-header">
+            <h3>📋 Directions</h3>
+            <button class="directions-close" onclick="closeDirections()">✕</button>
+        </div>
+        <ol class="directions-list">
+    `;
+
+    steps.forEach((step, idx) => {
+        html += `
+            <li class="direction-step step-${step.type}">
+                <span class="step-number">${idx + 1}</span>
+                <span class="step-icon">${step.icon}</span>
+                <span class="step-text">${step.text}</span>
+            </li>
+        `;
+    });
+
+    html += '</ol>';
+    container.innerHTML = html;
+    container.classList.add('active');
+}
+
+function closeDirections() {
+    document.getElementById('directions-container').classList.remove('active');
+}
+
+// =====================================================
+// ROUTE SHARING
+// =====================================================
+
+/**
+ * Copy the current route as a shareable URL to clipboard.
+ */
+function shareRoute() {
+    const startVal = document.getElementById('start-query').value.trim();
+    const goalVal = document.getElementById('goal-query').value.trim();
+
+    if (!startVal || !goalVal) {
+        showToast('Enter both Start and Goal to share a route.', 'error');
+        return;
+    }
+
+    const url = new URL(window.location.href.split('?')[0]);
+    url.searchParams.set('start', startVal);
+    url.searchParams.set('goal', goalVal);
+
+    navigator.clipboard.writeText(url.toString()).then(() => {
+        showToast('🔗 Route link copied to clipboard!');
+    }).catch(() => {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = url.toString();
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast('🔗 Route link copied to clipboard!');
+    });
+}
+
+// =====================================================
+// DOM SETUP
+// =====================================================
 document.addEventListener('DOMContentLoaded', () => {
     // Add interaction hooks
     document.getElementById('badge-floor-1').addEventListener('click', () => switchFloor(1));
@@ -37,6 +390,34 @@ document.addEventListener('DOMContentLoaded', () => {
             navigateUser();
         }
     });
+
+    // URL Parameter Detection (QR Code + Route Sharing)
+    const urlParams = new URLSearchParams(window.location.search);
+    const qrStart = urlParams.get('start');
+    const qrGoal = urlParams.get('goal');
+
+    if (qrStart) {
+        const startInput = document.getElementById('start-query');
+        startInput.value = qrStart;
+        startInput.readOnly = true;
+        showToast(`📍 Start location auto-detected: ${qrStart}`);
+    }
+
+    if (qrGoal) {
+        document.getElementById('goal-query').value = qrGoal;
+    }
+
+    // Setup autocomplete for both inputs
+    setupAutocomplete('start-query', 'start-suggestions');
+    setupAutocomplete('goal-query', 'goal-suggestions');
+
+    // If both start and goal are present, auto-navigate
+    if (qrStart && qrGoal) {
+        showToast('🧭 Shared route detected — navigating...');
+        setTimeout(() => navigateUser(), 500);
+    } else if (qrStart) {
+        document.getElementById('goal-query').focus();
+    }
 
     // Init map based on device type
     initMap();
@@ -141,6 +522,9 @@ async function navigateUser(event) {
         }
         
         globalGraphState = startData.graph;
+        // Refresh suggestion cache when graph is loaded
+        cachedSearchTerms = extractSearchTerms(globalGraphState);
+
         const startNodeId = startData.locations[0].NodeID;
         const targetNodeId = goalData.locations[0].NodeID;
         
@@ -152,8 +536,12 @@ async function navigateUser(event) {
             return;
         }
 
-        // 3. Render
+        // 3. Render route on map
         drawRoute(path);
+        
+        // 4. Generate and render step-by-step directions
+        const steps = generateInstructions(path);
+        renderDirections(steps);
         
         const resNameStart = startData.locations[0].RoomName || startTerm;
         const resNameGoal = goalData.locations[0].RoomName || goalTerm;
