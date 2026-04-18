@@ -2,12 +2,15 @@
 
 A serverless indoor navigation system designed for high-performance pathfinding and location search. This project leverages AWS serverless architecture including S3 for hosting, Lambda for compute, DynamoDB for metadata storage, and API Gateway for the backend interface.
 
-## 🚀 Overview
+## 🌟 Features (v2.5)
 
-- **Frontend**: A modern, interactive map interface with glassmorphism design.
-- **Backend**: Python-based Lambda functions handling search and routing logic.
-- **Data**: Topological graph stored in S3 and searchable location metadata in DynamoDB.
-- **Infrastructure**: Automated "one-click" deployment scripts for Windows and macOS.
+- **Search Suggestion System**: Real-time autocomplete with type-aware icons and Thai labels.
+- **Step-by-Step Directions**: Human-readable navigation steps with floor-change detection.
+- **Route Sharing**: Deep-copy shareable URLs that auto-navigate on arrival.
+- **Pinch-to-Zoom & Pan**: Fully mobile-optimized map viewport with touch gesture support.
+- **Multi-language Support**: Seamless toggle between English (EN) and Thai (TH).
+- **Theme System**: Premium Dark/Light mode support using a unified CSS variable system.
+- **Glassmorphic UI**: High-performance, low-latency frontend with modern aesthetics.
 
 ## 📋 Prerequisites
 
