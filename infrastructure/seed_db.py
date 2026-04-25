@@ -1,5 +1,5 @@
 """
-seed_db.py — Dynamically seeds DynamoDB from graph.json
+seed_db.py - Dynamically seeds DynamoDB from graph.json
 
 Reads all nodes from infrastructure/graph.json and generates DynamoDB
 metadata for every node whose type is in SEEDABLE_TYPES.
@@ -14,20 +14,32 @@ import json
 import os
 import sys
 
-# ═══════════════════════════════════════════════════════════════════════
+# =========================================================================
 # CONFIGURATION
-# ═══════════════════════════════════════════════════════════════════════
+# =========================================================================
 AWS_REGION = "us-east-1"
 TABLE_NAME = "LocationData"
 
 # Node types that should be indexed as searchable POIs in DynamoDB
 SEEDABLE_TYPES = {"room", "stairs", "toilet", "elevator", "cafe", "lab", "office", "facility"}
 
-# ═══════════════════════════════════════════════════════════════════════
-# OPTIONAL: Course & Event overlays (kept for backward compatibility)
-#   These map human-readable terms to room keys (bare room number).
-#   Room keys: Floor 1 → "101", Floor 2 → "201" (no prefix).
-# ═══════════════════════════════════════════════════════════════════════
+# QR Code Entry Points — these structural nodes are indexed by their
+# friendly name (e.g. 'Junction_SM') so that QR links like
+# ?start=Junction_SM resolve correctly via the search API.
+QR_ENTRY_POINTS = {
+    "Junction_SM",
+    "entry_TLLF",
+    "Junction_NM1",
+    "Junction_SR1",
+    "hallway-5",
+    "hallway-16",
+    "hallway-10",
+    "hallway-12",
+}
+
+# =========================================================================
+# OPTIONAL: Course & Event overlays
+# =========================================================================
 COURSES = {
     "ENV101 Sec 1": "101/2",
     "ENV102 Sec 1": "102/1",
@@ -62,22 +74,22 @@ EVENTS = {
     "Science Project Pitching": "135/1",
     "Electronics Lab Safety Training": "141",
     "Sci-Tech Hackathon 2026": "141",
-    "\u0e25\u0e2d\u0e07\u0e0a\u0e38\u0e14\u0e0a\u0e47\u0e2d\u0e1b\u0e04\u0e13\u0e30\u0e27\u0e34\u0e17\u0e22\u0e32\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c": "126",
-    "\u0e25\u0e07\u0e17\u0e30\u0e40\u0e1a\u0e35\u0e22\u0e19\u0e0a\u0e21\u0e23\u0e21\u0e04\u0e13\u0e30\u0e27\u0e34\u0e14\u0e22\u0e32": "126",
+    "ลองชุดช็อปคณะวิทยาศาสตร์": "126",
+    "ลงทะเบียนชมรมคณะวิดยา": "126",
     "Environmental Science Orientation": "236/2",
     "Graduate Research Symposium": "230",
 }
 
-# ═══════════════════════════════════════════════════════════════════════
+# =========================================================================
 # LOAD GRAPH DATA
-# ═══════════════════════════════════════════════════════════════════════
-print("═" * 60)
-print("  DynamoDB Seeder — Reading from graph.json")
-print("═" * 60)
+# =========================================================================
+print("=" * 60)
+print("  DynamoDB Seeder - Reading from graph.json")
+print("=" * 60)
 
 graph_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "graph.json")
 if not os.path.exists(graph_path):
-    print(f"❌ ERROR: graph.json not found at {graph_path}")
+    print(f"FAILED: graph.json not found at {graph_path}")
     sys.exit(1)
 
 with open(graph_path, "r", encoding="utf-8") as f:
@@ -91,10 +103,8 @@ print(f"  Building : {building}")
 print(f"  Nodes    : {len(nodes)}")
 print(f"  Edges    : {len(edges)}")
 
-# Build lookup tables
 node_by_id = {n["id"]: n for n in nodes}
 
-# Build room → nearest entry node mapping from edges
 room_entry_map = {}
 for edge in edges:
     u, v = edge.get("from", ""), edge.get("to", "")
@@ -107,38 +117,27 @@ for edge in edges:
     elif v_node.get("type") == "room" and u_node.get("type") != "room":
         room_entry_map.setdefault(v, u)
 
-
 def bare_room_name(node):
-    """Extract the searchable room number from a node.
-    Users search by plain number like '101', '204', 'stair-1'.
-    """
     return node.get("name", node["id"])
 
-
 def find_node_by_room_number(room_number):
-    """Find a node by its bare room number (e.g. '101', '204').
-    Searches both floor-1 and floor-2 node naming conventions.
-    """
     for node in nodes:
         if node.get("name") == room_number:
             return node
     return None
 
-
-# ═══════════════════════════════════════════════════════════════════════
+# =========================================================================
 # CONNECT TO DYNAMODB & CLEAR OLD DATA
-# ═══════════════════════════════════════════════════════════════════════
+# =========================================================================
 dynamodb = boto3.resource("dynamodb", region_name=AWS_REGION)
 table = dynamodb.Table(TABLE_NAME)
 
 print(f"\n  Target   : {TABLE_NAME} ({AWS_REGION})")
 print("  Clearing old data...")
 
-# Scan and delete all existing items
 scan_response = table.scan()
 old_items = scan_response.get("Items", [])
 
-# Handle pagination
 while scan_response.get("LastEvaluatedKey"):
     scan_response = table.scan(ExclusiveStartKey=scan_response["LastEvaluatedKey"])
     old_items.extend(scan_response.get("Items", []))
@@ -146,7 +145,6 @@ while scan_response.get("LastEvaluatedKey"):
 deleted = 0
 with table.batch_writer() as batch:
     for item in old_items:
-        # DynamoDB requires the key attributes to delete
         key = {"SearchTerm": item["SearchTerm"]}
         if "Detail" in item:
             key["Detail"] = item["Detail"]
@@ -155,9 +153,9 @@ with table.batch_writer() as batch:
 
 print(f"  Deleted  : {deleted} old records")
 
-# ═══════════════════════════════════════════════════════════════════════
+# =========================================================================
 # SEED NEW DATA
-# ═══════════════════════════════════════════════════════════════════════
+# =========================================================================
 print("\n  Seeding new data...\n")
 
 room_count = 0
@@ -166,20 +164,15 @@ course_count = 0
 event_count = 0
 
 with table.batch_writer() as batch:
-
-    # ── 1. Write all nodes ─────────────────────────────────────────────
     for node in nodes:
         node_id = node["id"]
         node_type = node.get("type", "")
         floor = str(node.get("floor", 1))
 
         if node_type in SEEDABLE_TYPES:
-            # This is a searchable POI
             search_name = bare_room_name(node)
             label = node.get("label", "")
             entry_node = room_entry_map.get(node_id, node_id)
-
-            # Detail suffix: ROOM for rooms, POI for others
             detail = "ROOM" if node_type == "room" else "POI"
 
             batch.put_item(Item={
@@ -196,13 +189,16 @@ with table.batch_writer() as batch:
             })
             room_count += 1
         else:
-            # Structural node (junction, entrance, walk, etc.)
+            # For QR entry points, use the friendly name as SearchTerm
+            node_name = node.get("name", node_id)
+            search_key = node_name if node_name in QR_ENTRY_POINTS else node_id
+
             batch.put_item(Item={
-                "SearchTerm": node_id,
+                "SearchTerm": search_key,
                 "Detail": "NODE",
                 "NodeID": node_id,
                 "NodeEntry": node_id,
-                "RoomNumber": node.get("name", ""),
+                "RoomNumber": node_name,
                 "RoomName": node_type.capitalize() if node_type else "Node",
                 "Floor": floor,
                 "X": str(node.get("x", 0)),
@@ -211,7 +207,6 @@ with table.batch_writer() as batch:
             })
             structural_count += 1
 
-    # ── 2. Write Course metadata ───────────────────────────────────────
     for course_name, room_number in COURSES.items():
         target_node = find_node_by_room_number(room_number)
         if target_node:
@@ -231,9 +226,8 @@ with table.batch_writer() as batch:
             })
             course_count += 1
         else:
-            print(f"  ⚠ Course '{course_name}' → room '{room_number}' not found in graph, skipped.")
+            print(f"  [MISSING] Course '{course_name}' -> room '{room_number}' not found.")
 
-    # ── 3. Write Event metadata ────────────────────────────────────────
     for event_name, room_number in EVENTS.items():
         target_node = find_node_by_room_number(room_number)
         if target_node:
@@ -253,19 +247,19 @@ with table.batch_writer() as batch:
             })
             event_count += 1
         else:
-            print(f"  ⚠ Event '{event_name}' → room '{room_number}' not found in graph, skipped.")
+            print(f"  [MISSING] Event '{event_name}' -> room '{room_number}' not found.")
 
-# ═══════════════════════════════════════════════════════════════════════
+# =========================================================================
 # SUMMARY
-# ═══════════════════════════════════════════════════════════════════════
+# =========================================================================
 total = room_count + structural_count + course_count + event_count
-print("═" * 60)
-print(f"  ✅ Database Seeding Complete!")
-print(f"")
+print("=" * 60)
+print(f"  SUCCESS: Database Seeding Complete!")
+print("")
 print(f"  POI/Room records   : {room_count}")
 print(f"  Structural nodes   : {structural_count}")
 print(f"  Course records     : {course_count}")
 print(f"  Event records      : {event_count}")
-print(f"  ─────────────────────────────")
+print(f"  -----------------------------")
 print(f"  Total inserted     : {total}")
-print("═" * 60)
+print("=" * 60)
