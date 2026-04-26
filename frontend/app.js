@@ -1142,36 +1142,16 @@ function showToast(message, type = "success") {
 }
 
 // =====================================================
-// EVENT SIDEBAR & MOBILE MENU LOGIC
+// EVENT SIDEBAR LOGIC
 // =====================================================
 document.addEventListener('DOMContentLoaded', () => {
-    const toggleBtn = document.getElementById('event-menu-toggle');
-    const sidebar = document.getElementById('event-sidebar');
-    const backdrop = document.getElementById('sidebar-backdrop');
-    const closeBtn = document.getElementById('close-sidebar-btn');
     const sidebarContent = document.getElementById('sidebar-content');
 
-    function openSidebar() {
-        if(sidebar) sidebar.classList.add('sidebar-active');
-        if(backdrop) backdrop.classList.add('active');
-    }
-
-    function closeSidebar() {
-        if(sidebar) sidebar.classList.remove('sidebar-active');
-        if(backdrop) backdrop.classList.remove('active');
-    }
-
-    if(toggleBtn) toggleBtn.addEventListener('click', openSidebar);
-    if(closeBtn) closeBtn.addEventListener('click', closeSidebar);
-    if(backdrop) backdrop.addEventListener('click', closeSidebar);
-
-    // Close the sidebar when an event card is clicked (Crucial UX Fix for Mobile)
+    // Handle event card clicks
     if (sidebarContent) {
         sidebarContent.addEventListener('click', (e) => {
             const card = e.target.closest('.event-card');
             if (card) {
-                closeSidebar();
-                
                 // If the card has data-room, we can auto-fill and navigate
                 const roomName = card.getAttribute('data-room');
                 if (roomName) {

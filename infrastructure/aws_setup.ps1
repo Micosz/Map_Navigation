@@ -43,13 +43,18 @@ Remove-Item "tmp_policy.json"
 
 # 2. Setup DynamoDB
 Write-Host "`n[2/7] Creating DynamoDB Table (LocationData)..."
-aws dynamodb create-table `
-    --table-name LocationData `
-    --attribute-definitions AttributeName=SearchTerm,AttributeType=S AttributeName=Detail,AttributeType=S `
-    --key-schema AttributeName=SearchTerm,KeyType=HASH AttributeName=Detail,KeyType=RANGE `
-    --billing-mode PAY_PER_REQUEST `
-    --region $AwsRegion | Out-Null
-aws dynamodb wait table-exists --table-name LocationData --region $AwsRegion
+aws dynamodb describe-table --table-name LocationData --region $AwsRegion 2>$null
+if (-not $?) {
+    aws dynamodb create-table `
+        --table-name LocationData `
+        --attribute-definitions AttributeName=SearchTerm,AttributeType=S AttributeName=Detail,AttributeType=S `
+        --key-schema AttributeName=SearchTerm,KeyType=HASH AttributeName=Detail,KeyType=RANGE `
+        --billing-mode PAY_PER_REQUEST `
+        --region $AwsRegion | Out-Null
+    aws dynamodb wait table-exists --table-name LocationData --region $AwsRegion
+} else {
+    Write-Host "Table LocationData already exists. Skipping creation."
+}
 
 # 3. Deploy Lambda
 Write-Host "`n[3/7] Packaging and Deploying Lambda..."
@@ -61,15 +66,24 @@ Set-Location "..\backend"
 Compress-Archive -Path "search_handler.py" -DestinationPath $ZipFile
 Set-Location $currentDir
 
-aws lambda create-function `
-    --function-name indoor-navigation-search `
-    --runtime python3.9 `
-    --role arn:aws:iam::${AwsAccountId}:role/LabRole `
-    --handler search_handler.lambda_handler `
-    --zip-file fileb://$ZipFile `
-    --timeout 30 `
-    --environment "Variables={DATA_BUCKET=$DataBucket}" `
-    --region $AwsRegion | Out-Null
+aws lambda get-function --function-name indoor-navigation-search --region $AwsRegion 2>$null
+if ($?) {
+    Write-Host "Updating existing Lambda function..."
+    aws lambda update-function-code --function-name indoor-navigation-search --zip-file fileb://$ZipFile --region $AwsRegion | Out-Null
+    aws lambda wait function-updated --function-name indoor-navigation-search --region $AwsRegion 2>$null
+    aws lambda update-function-configuration --function-name indoor-navigation-search --environment "Variables={DATA_BUCKET=$DataBucket}" --region $AwsRegion | Out-Null
+} else {
+    Write-Host "Creating new Lambda function..."
+    aws lambda create-function `
+        --function-name indoor-navigation-search `
+        --runtime python3.9 `
+        --role arn:aws:iam::${AwsAccountId}:role/LabRole `
+        --handler search_handler.lambda_handler `
+        --zip-file fileb://$ZipFile `
+        --timeout 30 `
+        --environment "Variables={DATA_BUCKET=$DataBucket}" `
+        --region $AwsRegion | Out-Null
+}
 Remove-Item $ZipFile
 
 # 4. Configure API Gateway
@@ -103,6 +117,7 @@ Remove-Item "tmp_req.json", "tmp_res.json"
 
 # 5. Finalize API and Lambda
 Write-Host "`n[5/7] Finalizing Permissions and Deployment..."
+aws lambda remove-permission --function-name indoor-navigation-search --statement-id api-invoke --region $AwsRegion 2>$null
 aws lambda add-permission --function-name indoor-navigation-search --statement-id api-invoke --action lambda:InvokeFunction --principal apigateway.amazonaws.com --source-arn "arn:aws:execute-api:${AwsRegion}:${AwsAccountId}:${ApiId}/*/*" --region $AwsRegion | Out-Null
 aws apigateway create-deployment --rest-api-id $ApiId --stage-name prod --region $AwsRegion | Out-Null
 

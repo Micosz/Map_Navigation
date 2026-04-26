@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Indoor Navigation Dashboard</title>
     <link rel="stylesheet" href="index.css">
-    
+
     <!-- Load Env dynamically mapped by AWS Setup -->
     <script src="env.js"></script>
 </head>
+
 <body>
     <!-- Search Interface -->
     <div class="search-panel" id="search-panel">
         <div class="search-flex">
             <h1 class="compact-title" data-i18n="title">Indoor Wayfinder</h1>
-            
+
             <div class="input-group">
                 <div class="input-wrapper">
                     <div class="input-box">
@@ -23,7 +25,7 @@
                     </div>
                     <div class="suggestion-list" id="start-suggestions"></div>
                 </div>
-                
+
                 <div class="input-wrapper">
                     <div class="input-box">
                         <span class="tiny-label" data-i18n="to">TO:</span>
@@ -31,9 +33,10 @@
                     </div>
                     <div class="suggestion-list" id="goal-suggestions"></div>
                 </div>
-                
+
                 <button id="btn-navigate" onclick="navigateUser(event)" data-i18n="navigate">Navigate</button>
-                <button id="btn-share" class="btn-share" onclick="shareRoute()">📤 <span data-i18n="share">Share</span></button>
+                <button id="btn-share" class="btn-share" onclick="shareRoute()">📤 <span
+                        data-i18n="share">Share</span></button>
             </div>
         </div>
     </div>
@@ -65,17 +68,15 @@
         <div class="floor-badge" id="badge-floor-2" data-i18n="floor2">Floor 2</div>
     </div>
 
-    <!-- Mobile Hamburger Menu Button -->
-    <button id="event-menu-toggle" class="hamburger-btn">☰ กิจกรรม</button>
 
-    <!-- Sidebar Backdrop for Mobile -->
-    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+
 
     <!-- Event Sidebar -->
     <aside id="event-sidebar" class="event-sidebar">
         <div class="sidebar-header">
             <h2 data-i18n="today_events">Today's Events</h2>
-            <button id="close-sidebar-btn" class="close-sidebar">✕</button>
+
         </div>
         <div class="sidebar-content" id="sidebar-content">
             <!-- Dynamic events will be injected here -->
@@ -97,16 +98,18 @@
     <!-- Mapping Engine -->
     <div class="map-arena" id="map-arena">
         <div class="map-viewport" id="map-viewport">
-        
+
             <!-- Floor 1 Container -->
             <div class="map-layer active" id="layer-floor-1">
-                <img src="LC3-MAP-1stFloor.svg" alt="Floor 1" class="map-image" id="img-floor-1" width="1217" height="742">
+                <img src="LC3-MAP-1stFloor.svg" alt="Floor 1" class="map-image" id="img-floor-1" width="1217"
+                    height="742">
                 <canvas id="canvas-floor-1" width="1217" height="742"></canvas>
             </div>
 
             <!-- Floor 2 Container -->
             <div class="map-layer" id="layer-floor-2">
-                <img src="LC3-MAP-2ndFloor.svg" alt="Floor 2" class="map-image" id="img-floor-2" width="1152" height="766">
+                <img src="LC3-MAP-2ndFloor.svg" alt="Floor 2" class="map-image" id="img-floor-2" width="1152"
+                    height="766">
                 <canvas id="canvas-floor-2" width="1152" height="766"></canvas>
             </div>
 
@@ -118,4 +121,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>
