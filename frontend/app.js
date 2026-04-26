@@ -159,7 +159,8 @@ const SEARCHABLE_TYPES = ['room', 'stairs', 'toilet', 'elevator', 'cafe', 'lab',
 
 const TYPE_ICONS = {
     room: '🚪', stairs: '🪜', toilet: '🚻', elevator: '🛗',
-    cafe: '☕', lab: '🔬', office: '💼'
+    cafe: '☕', lab: '🔬', office: '💼',
+    event: '📅', course: '📚'
 };
 
 let cachedSearchTerms = null;
@@ -168,7 +169,7 @@ function extractSearchTerms(graphData) {
     if (!graphData || !graphData.nodes) return [];
     return graphData.nodes
         .filter(n => SEARCHABLE_TYPES.includes(n.type))
-        .map(n => ({ name: n.name, label: n.label || '', type: n.type, floor: n.floor, id: n.id }))
+        .map(n => ({ name: n.name, label: n.label || '', type: n.type, floor: n.floor, id: n.id, category: 'room' }))
         .sort((a, b) => {
             const numA = parseFloat(a.name);
             const numB = parseFloat(b.name);
@@ -238,34 +239,100 @@ function setupAutocomplete(inputId, listId) {
     });
 }
 
+let searchDebounceTimer = null;
+
 function renderSuggestions(input, list) {
     const query = input.value.trim().toLowerCase();
+    
+    if (!query) { 
+        closeSuggestions(list); 
+        return; 
+    }
+
+    // Debounced API search for ALL categories
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(async () => {
+        try {
+            const apiMatches = await searchEventsFromAPI(query);
+            if (input.value.trim().toLowerCase() === query) {
+                renderMatchItems(apiMatches, input, list, []);
+            }
+        } catch (e) {
+            // Silently fail
+        }
+    }, 250);
+}
+
+/**
+ * Search the API for events/courses matching the query.
+ * Returns an array of suggestion-compatible objects.
+ */
+async function searchEventsFromAPI(query) {
+    try {
+        const baseUrl = window.API_SEARCH_ENDPOINT || 'http://localhost/search';
+        const res = await fetch(`${baseUrl}?search=${encodeURIComponent(query)}`, {
+            method: 'GET', mode: 'cors', headers: { 'Accept': 'application/json' }
+        });
+        if (!res.ok) return [];
+
+        const data = await res.json();
+        if (!data.locations) return [];
+
+        return data.locations
+            .map(loc => ({
+                name: loc.SearchTerm,
+                label: loc.RoomName || '',
+                type: loc.category,
+                category: loc.category,
+                floor: parseInt(loc.Floor) || 1,
+                id: loc.NodeID,
+                nodeEntry: loc.NodeEntry,
+                roomNumber: loc.RoomNumber
+            }));
+    } catch (e) {
+        return [];
+    }
+}
+
+/**
+ * Render suggestion items into the list.
+ * If apiMatches are provided, they are appended after local matches.
+ */
+function renderMatchItems(localMatches, input, list, apiMatches = []) {
     list.innerHTML = '';
 
-    if (!query || !cachedSearchTerms) { closeSuggestions(list); return; }
+    const allMatches = [...localMatches, ...apiMatches].slice(0, 8);
 
-    const matches = cachedSearchTerms.filter(term =>
-        term.name.toLowerCase().includes(query) ||
-        term.label.toLowerCase().includes(query)
-    ).slice(0, 8);
+    if (allMatches.length === 0) { closeSuggestions(list); return; }
 
-    if (matches.length === 0) { closeSuggestions(list); return; }
-
-    matches.forEach(term => {
+    allMatches.forEach(term => {
         const item = document.createElement('div');
-        item.className = 'suggestion-item';
-        const icon = TYPE_ICONS[term.type] || '📍';
+        const cat = term.category || 'room';
+        item.className = `suggestion-item suggestion-type-${cat}`;
+        const icon = TYPE_ICONS[cat] || TYPE_ICONS[term.type] || '📍';
         const floorLabel = currentLang === 'th' ? `ชั้น${term.floor}` : `F${term.floor}`;
+
+        // Build category badge for events/courses
+        let catBadge = '';
+        if (cat === 'event') {
+            catBadge = `<span class="search-type-badge badge-event">${currentLang === 'th' ? 'กิจกรรม' : 'Event'}</span>`;
+        } else if (cat === 'course') {
+            catBadge = `<span class="search-type-badge badge-course">${currentLang === 'th' ? 'วิชา' : 'Course'}</span>`;
+        }
+
         item.innerHTML = `
             <div class="room-name">
                 <span class="type-icon">${icon}</span>
                 ${term.name}
                 <span class="floor-tag">${floorLabel}</span>
+                ${catBadge}
             </div>
             ${term.label ? `<div class="room-label">${term.label}</div>` : ''}
         `;
         item.addEventListener('mousedown', (e) => {
             e.preventDefault();
+            // For events/courses, put the SearchTerm in the input
+            // so the API can resolve it to the correct node
             input.value = term.name;
             closeSuggestions(list);
             input.focus();
@@ -400,6 +467,12 @@ function resetNavigation() {
         btn.classList.add('btn-active');
         setTimeout(() => btn.classList.remove('btn-active'), 200);
     }
+    // Cancel any running route animation
+    if (routeAnimationFrameId) {
+        cancelAnimationFrame(routeAnimationFrameId);
+        routeAnimationFrameId = null;
+    }
+
     // Clear inputs
     const startInput = document.getElementById('start-query');
     const goalInput = document.getElementById('goal-query');
@@ -705,6 +778,7 @@ function setupMobileMap() {
 // =====================================================
 let currentFloor = 1;
 var globalGraphState = null;
+let routeAnimationFrameId = null;
 
 // =====================================================
 // CORE NAVIGATION LOGIC
@@ -761,7 +835,13 @@ async function navigateUser(event) {
             return;
         }
 
-        // Render route on map
+        // Cancel any running route animation before starting a new one
+        if (routeAnimationFrameId) {
+            cancelAnimationFrame(routeAnimationFrameId);
+            routeAnimationFrameId = null;
+        }
+
+        // Render route on map (animated)
         drawRoute(path);
 
         // Save path for language re-render
@@ -834,6 +914,11 @@ function reconstructPath(cameFrom, currentId, nodes) {
 // =====================================================
 // RENDERING ENGINE
 // =====================================================
+
+// Animation speed: pixels drawn per frame (~60fps).
+// Higher = faster line drawing. Tweak to taste.
+const ROUTE_ANIMATION_SPEED = 8;
+
 function switchFloor(floorNum) {
     currentFloor = floorNum;
     document.getElementById('badge-floor-1').classList.toggle('active', floorNum === 1);
@@ -848,40 +933,17 @@ function switchFloor(floorNum) {
     }
 }
 
-function drawRoute(path) {
-    const c1 = document.getElementById('canvas-floor-1');
-    const c2 = document.getElementById('canvas-floor-2');
-    const ctx1 = c1.getContext('2d');
-    const ctx2 = c2.getContext('2d');
+/**
+ * Draw a partial line segment between two nodes.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{x:number,y:number}} n1  Start node
+ * @param {{x:number,y:number}} n2  End node
+ * @param {number} ratio  0..1 how much of the segment to draw
+ */
+function drawSegment(ctx, n1, n2, ratio) {
+    const endX = n1.x + (n2.x - n1.x) * ratio;
+    const endY = n1.y + (n2.y - n1.y) * ratio;
 
-    ctx1.clearRect(0, 0, c1.width, c1.height);
-    ctx2.clearRect(0, 0, c2.width, c2.height);
-
-    if (path.length === 0) return;
-
-    const floorPaths = { 1: [], 2: [] };
-    for (let i = 0; i < path.length - 1; i++) {
-        const n1 = path[i];
-        const n2 = path[i + 1];
-        if (n1.floor === n2.floor) {
-            floorPaths[n1.floor].push([n1, n2]);
-        } else {
-            renderStairTransition(ctx1, n1);
-            renderStairTransition(ctx2, n2);
-        }
-    }
-
-    renderLineSegments(ctx1, floorPaths[1]);
-    renderLineSegments(ctx2, floorPaths[2]);
-
-    renderMarker(document.getElementById(`canvas-floor-${path[0].floor}`).getContext('2d'), path[0], '#10b981', 'START');
-    renderMarker(document.getElementById(`canvas-floor-${path[path.length - 1].floor}`).getContext('2d'), path[path.length - 1], '#ef4444', 'DEST');
-
-    switchFloor(path[0].floor);
-}
-
-function renderLineSegments(ctx, segments) {
-    if (segments.length === 0) return;
     ctx.beginPath();
     ctx.strokeStyle = '#3b82f6';
     ctx.lineWidth = 6;
@@ -889,12 +951,140 @@ function renderLineSegments(ctx, segments) {
     ctx.lineJoin = 'round';
     ctx.shadowColor = 'rgba(59, 130, 246, 0.8)';
     ctx.shadowBlur = 10;
-    for (const [n1, n2] of segments) {
-        ctx.moveTo(n1.x, n1.y);
-        ctx.lineTo(n2.x, n2.y);
-    }
+    ctx.moveTo(n1.x, n1.y);
+    ctx.lineTo(endX, endY);
     ctx.stroke();
     ctx.shadowBlur = 0;
+}
+
+/**
+ * Animated route drawer.
+ * Traces each segment sequentially using requestAnimationFrame.
+ */
+function drawRoute(path) {
+    const c1 = document.getElementById('canvas-floor-1');
+    const c2 = document.getElementById('canvas-floor-2');
+    const ctx1 = c1.getContext('2d');
+    const ctx2 = c2.getContext('2d');
+
+    // Clear both canvases
+    ctx1.clearRect(0, 0, c1.width, c1.height);
+    ctx2.clearRect(0, 0, c2.width, c2.height);
+
+    if (!path || path.length === 0) return;
+
+    // ---- Pre-compute segment list with metadata ----
+    const segments = [];
+    for (let i = 0; i < path.length - 1; i++) {
+        const n1 = path[i];
+        const n2 = path[i + 1];
+        const isFloorChange = n1.floor !== n2.floor;
+        const length = isFloorChange
+            ? 0
+            : Math.sqrt((n2.x - n1.x) ** 2 + (n2.y - n1.y) ** 2);
+        segments.push({ n1, n2, isFloorChange, length });
+    }
+
+    // ---- State for the animation loop ----
+    const speed = ROUTE_ANIMATION_SPEED;
+    let segIdx = 0;          // current segment index
+    let segProgress = 0;     // pixels drawn in current segment
+    let lastSwitchedFloor = path[0].floor;
+
+    // Show the starting floor & start marker immediately
+    switchFloor(path[0].floor);
+    const startCtx = getFloorCtx(path[0].floor);
+    renderMarker(startCtx, path[0], '#10b981', 'START');
+
+    // ---- Helpers ----
+    function getFloorCtx(floor) {
+        return floor === 1 ? ctx1 : ctx2;
+    }
+
+    /**
+     * Redraw all fully-completed segments plus the current partial one.
+     * We repaint every frame so the glow/shadow composites correctly.
+     */
+    function repaint(currentSegIdx, currentRatio) {
+        ctx1.clearRect(0, 0, c1.width, c1.height);
+        ctx2.clearRect(0, 0, c2.width, c2.height);
+
+        // Draw all completed segments
+        for (let i = 0; i < currentSegIdx; i++) {
+            const seg = segments[i];
+            if (seg.isFloorChange) {
+                renderStairTransition(getFloorCtx(seg.n1.floor), seg.n1);
+                renderStairTransition(getFloorCtx(seg.n2.floor), seg.n2);
+            } else {
+                drawSegment(getFloorCtx(seg.n1.floor), seg.n1, seg.n2, 1);
+            }
+        }
+
+        // Draw current partial segment
+        if (currentSegIdx < segments.length) {
+            const seg = segments[currentSegIdx];
+            if (!seg.isFloorChange) {
+                drawSegment(getFloorCtx(seg.n1.floor), seg.n1, seg.n2, currentRatio);
+            }
+        }
+
+        // Always redraw the START marker on top
+        renderMarker(getFloorCtx(path[0].floor), path[0], '#10b981', 'START');
+    }
+
+    // ---- Animation loop ----
+    function tick() {
+        if (segIdx >= segments.length) {
+            // Animation complete – draw DEST marker
+            repaint(segments.length, 1);
+            const endNode = path[path.length - 1];
+            renderMarker(getFloorCtx(endNode.floor), endNode, '#ef4444', 'DEST');
+            routeAnimationFrameId = null;
+            return;
+        }
+
+        const seg = segments[segIdx];
+
+        // Floor-change segments are instant (zero-length)
+        if (seg.isFloorChange) {
+            renderStairTransition(getFloorCtx(seg.n1.floor), seg.n1);
+            renderStairTransition(getFloorCtx(seg.n2.floor), seg.n2);
+
+            // Auto-switch to the new floor so the user can follow
+            if (seg.n2.floor !== lastSwitchedFloor) {
+                lastSwitchedFloor = seg.n2.floor;
+                switchFloor(seg.n2.floor);
+            }
+
+            segIdx++;
+            segProgress = 0;
+            routeAnimationFrameId = requestAnimationFrame(tick);
+            return;
+        }
+
+        // Advance progress on the current segment
+        segProgress += speed;
+        const ratio = Math.min(segProgress / seg.length, 1);
+
+        // Auto-switch floor when we start drawing on a new floor
+        if (seg.n1.floor !== lastSwitchedFloor) {
+            lastSwitchedFloor = seg.n1.floor;
+            switchFloor(seg.n1.floor);
+        }
+
+        repaint(segIdx, ratio);
+
+        if (ratio >= 1) {
+            // Move to next segment
+            segIdx++;
+            segProgress = 0;
+        }
+
+        routeAnimationFrameId = requestAnimationFrame(tick);
+    }
+
+    // Kick off the animation
+    routeAnimationFrameId = requestAnimationFrame(tick);
 }
 
 function renderMarker(ctx, node, color, label) {

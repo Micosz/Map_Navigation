@@ -1811,8 +1811,8 @@
       "type": "entrance"
     },
     {
-      "id": "LC3_entry_135/1",
-      "name": "entry_135/1",
+      "id": "LC3_entry_135",
+      "name": "entry_135",
       "floor": 1,
       "x": 1055,
       "y": 224,
@@ -3476,18 +3476,18 @@
     },
     {
       "from": "LC3_entry_136",
-      "to": "LC3_entry_135/1",
+      "to": "LC3_entry_135",
       "type": "walk",
       "distance": 0
     },
     {
-      "from": "LC3_entry_135/1",
+      "from": "LC3_entry_135",
       "to": "LC3_135",
       "type": "walk",
       "distance": 0
     },
     {
-      "from": "LC3_entry_135/1",
+      "from": "LC3_entry_135",
       "to": "LC3_Junction_TLRF",
       "type": "walk",
       "distance": 0

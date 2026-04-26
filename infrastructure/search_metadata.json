@@ -1,0 +1,8 @@
+[
+  { "category": "event", "name": "งานประชุมสัมมนา AI for Future 2026", "node_id": "135" },
+  { "category": "event", "name": "จุดลองเสื้อช็อป CS", "node_id": "126" },
+  { "category": "event", "name": "Open House (จุดลงทะเบียน)", "node_id": "hallway-5" },
+  { "category": "course", "course_id": "CS111", "sec": "650001", "node_id": "122" },
+  { "category": "course", "course_id": "CS111", "sec": "650002", "node_id": "121" },
+  { "category": "course", "course_id": "CS251", "sec": "650001", "node_id": "204" }
+]

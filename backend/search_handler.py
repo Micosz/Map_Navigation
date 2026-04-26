@@ -37,14 +37,23 @@ def lambda_handler(event, context):
                 'body': json.dumps({'error': 'Search term is required'})
             }
         
-        # Query DynamoDB
+        # Query DynamoDB - use scan and Python filtering for partial, case-insensitive match
         table = dynamodb.Table('LocationData')
-        response = table.query(
-            KeyConditionExpression='SearchTerm = :search_term',
-            ExpressionAttributeValues={':search_term': search_term}
-        )
+        response = table.scan()
+        all_items = response.get('Items', [])
         
-        if not response.get('Items'):
+        # Handle pagination if necessary
+        while 'LastEvaluatedKey' in response:
+            response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
+            all_items.extend(response.get('Items', []))
+            
+        items = [
+            item for item in all_items 
+            if search_term.lower() in item.get('SearchTerm', '').lower()
+        ]
+
+        
+        if not items:
             return {
                 'statusCode': 404,
                 'headers': headers,
@@ -72,7 +81,7 @@ def lambda_handler(event, context):
                 return float(obj)
             return obj
         
-        items = decimal_to_float(response['Items'])
+        items = decimal_to_float(items)
         
         return {
             'statusCode': 200,

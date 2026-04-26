@@ -1,8 +1,9 @@
 """
-seed_db.py - Dynamically seeds DynamoDB from graph.json
+seed_db.py - Seeds DynamoDB from graph.json + search_metadata.json
 
-Reads all nodes from infrastructure/graph.json and generates DynamoDB
-metadata for every node whose type is in SEEDABLE_TYPES.
+Reads building graph data and supplementary search metadata (courses,
+events) to populate the LocationData DynamoDB table with a unified
+4-category search index: room, course, event, and structural nodes.
 
 Usage:
     cd infrastructure
@@ -13,6 +14,10 @@ import boto3
 import json
 import os
 import sys
+
+# Fix Windows console encoding for Thai text output
+sys.stdout.reconfigure(encoding='utf-8')
+sys.stderr.reconfigure(encoding='utf-8')
 
 # =========================================================================
 # CONFIGURATION
@@ -38,62 +43,32 @@ QR_ENTRY_POINTS = {
 }
 
 # =========================================================================
-# OPTIONAL: Course & Event overlays
-# =========================================================================
-COURSES = {
-    "ENV101 Sec 1": "101/2",
-    "ENV102 Sec 1": "102/1",
-    "ENV205 Sec 2": "102/2",
-    "ENV301 Sec 1": "103",
-    "CHM101 Sec 3": "104",
-    "ENV402 Sec 1": "105",
-    "MTH101 Sec 2": "106",
-    "STA201 Sec 1": "107",
-    "PHY101 Sec 4": "108",
-    "CS265 Sec 1": "109",
-    "CS251 Sec 2": "110",
-    "CS262 Sec 1": "111",
-    "MTH202 Sec 1": "116",
-    "PHY102 Sec 2": "117",
-    "CS271 Sec 1": "118",
-    "STA202 Sec 2": "118/1",
-    "CS232 Sec 1": "121",
-    "CS101 Sec 1": "122",
-    "ENV310 Sec 1": "203",
-    "ENV210 Sec 1": "206",
-    "ENV215 Sec 1": "208",
-    "MTH301 Sec 1": "222",
-    "ENV401 Sec 1": "239",
-    "ENV320 Sec 1": "241",
-    "ENV330 Sec 1": "242",
-    "ENV340 Sec 1": "243/1",
-}
-
-EVENTS = {
-    "Science Faculty Townhall": "135/1",
-    "Science Project Pitching": "135/1",
-    "Electronics Lab Safety Training": "141",
-    "Sci-Tech Hackathon 2026": "141",
-    "ลองชุดช็อปคณะวิทยาศาสตร์": "126",
-    "ลงทะเบียนชมรมคณะวิดยา": "126",
-    "Environmental Science Orientation": "236/2",
-    "Graduate Research Symposium": "230",
-}
-
-# =========================================================================
-# LOAD GRAPH DATA
+# LOAD DATA FILES
 # =========================================================================
 print("=" * 60)
-print("  DynamoDB Seeder - Reading from graph.json")
+print("  DynamoDB Seeder — 4-Category Search Index")
 print("=" * 60)
 
-graph_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "graph.json")
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
+# --- graph.json (required) ---
+graph_path = os.path.join(base_dir, "graph.json")
 if not os.path.exists(graph_path):
-    print(f"FAILED: graph.json not found at {graph_path}")
+    print(f"  FATAL: graph.json not found at {graph_path}")
     sys.exit(1)
 
 with open(graph_path, "r", encoding="utf-8") as f:
     MAP_DATA = json.load(f)
+
+# --- search_metadata.json (optional — courses & events) ---
+metadata_path = os.path.join(base_dir, "search_metadata.json")
+SEARCH_METADATA = []
+if os.path.exists(metadata_path):
+    with open(metadata_path, "r", encoding="utf-8") as f:
+        SEARCH_METADATA = json.load(f)
+    print(f"  Metadata : {len(SEARCH_METADATA)} entries loaded from search_metadata.json")
+else:
+    print("  Metadata : search_metadata.json not found (skipping)")
 
 nodes = MAP_DATA.get("nodes", [])
 edges = MAP_DATA.get("edges", [])
@@ -103,8 +78,12 @@ print(f"  Building : {building}")
 print(f"  Nodes    : {len(nodes)}")
 print(f"  Edges    : {len(edges)}")
 
+# =========================================================================
+# BUILD LOOKUP MAPS
+# =========================================================================
 node_by_id = {n["id"]: n for n in nodes}
 
+# Map each room node to its best non-room neighbour (entry point for A*)
 room_entry_map = {}
 for edge in edges:
     u, v = edge.get("from", ""), edge.get("to", "")
@@ -117,13 +96,20 @@ for edge in edges:
     elif v_node.get("type") == "room" and u_node.get("type") != "room":
         room_entry_map.setdefault(v, u)
 
+
 def bare_room_name(node):
+    """Return the short display name of a node (e.g. '204')."""
     return node.get("name", node["id"])
 
-def find_node_by_room_number(room_number):
-    for node in nodes:
-        if node.get("name") == room_number:
-            return node
+
+def resolve_node(identifier):
+    """Resolve a node by ID first, then by name. Returns the node dict or None."""
+    if identifier in node_by_id:
+        return node_by_id[identifier]
+    # Fallback: search by node name
+    for n in nodes:
+        if n.get("name") == identifier:
+            return n
     return None
 
 # =========================================================================
@@ -164,6 +150,10 @@ course_count = 0
 event_count = 0
 
 with table.batch_writer() as batch:
+
+    # -----------------------------------------------------------------
+    # 1) ROOMS & POIs from graph.json
+    # -----------------------------------------------------------------
     for node in nodes:
         node_id = node["id"]
         node_type = node.get("type", "")
@@ -186,10 +176,11 @@ with table.batch_writer() as batch:
                 "X": str(node.get("x", 0)),
                 "Y": str(node.get("y", 0)),
                 "NodeType": node_type,
+                "category": "room",
             })
             room_count += 1
         else:
-            # For QR entry points, use the friendly name as SearchTerm
+            # Structural / QR entry-point nodes
             node_name = node.get("name", node_id)
             search_key = node_name if node_name in QR_ENTRY_POINTS else node_id
 
@@ -207,47 +198,70 @@ with table.batch_writer() as batch:
             })
             structural_count += 1
 
-    for course_name, room_number in COURSES.items():
-        target_node = find_node_by_room_number(room_number)
-        if target_node:
-            node_id = target_node["id"]
-            entry_node = room_entry_map.get(node_id, node_id)
+    # -----------------------------------------------------------------
+    # 2) COURSES & EVENTS from search_metadata.json
+    # -----------------------------------------------------------------
+    for entry in SEARCH_METADATA:
+        cat = entry.get("category", "")
+        raw_node_id = entry.get("node_id", "")
+
+        if not raw_node_id:
+            continue
+
+        target_node = resolve_node(raw_node_id)
+        if not target_node:
+            print(f"  [MISSING] {cat} → node '{raw_node_id}' not found in graph.")
+            continue
+
+        nid = target_node["id"]
+        entry_node = room_entry_map.get(nid, nid)
+        target_name = bare_room_name(target_node)
+        floor = str(target_node.get("floor", 1))
+
+        if cat == "course":
+            course_id = entry.get("course_id", "")
+            sec = entry.get("sec", "")
+            search_term = f"{course_id} Sec {sec}"
+            detail = "COURSE"
+
             batch.put_item(Item={
-                "SearchTerm": course_name,
-                "Detail": "COURSE",
-                "NodeID": node_id,
+                "SearchTerm": search_term,
+                "Detail": detail,
+                "NodeID": nid,
                 "NodeEntry": entry_node,
-                "RoomNumber": f"{building}-{room_number}",
-                "RoomName": target_node.get("label", course_name),
-                "Floor": str(target_node.get("floor", 1)),
+                "RoomNumber": f"{building}-{target_name}",
+                "RoomName": target_node.get("label", search_term),
+                "Floor": floor,
                 "X": str(target_node.get("x", 0)),
                 "Y": str(target_node.get("y", 0)),
-                "NodeType": "room",
+                "NodeType": target_node.get("type", "room"),
+                "category": "course",
             })
             course_count += 1
-        else:
-            print(f"  [MISSING] Course '{course_name}' -> room '{room_number}' not found.")
 
-    for event_name, room_number in EVENTS.items():
-        target_node = find_node_by_room_number(room_number)
-        if target_node:
-            node_id = target_node["id"]
-            entry_node = room_entry_map.get(node_id, node_id)
+        elif cat == "event":
+            event_name = entry.get("name", "")
+            if not event_name:
+                continue
+            detail = "EVENT"
+
             batch.put_item(Item={
                 "SearchTerm": event_name,
-                "Detail": "EVENT",
-                "NodeID": node_id,
+                "Detail": detail,
+                "NodeID": nid,
                 "NodeEntry": entry_node,
-                "RoomNumber": f"{building}-{room_number}",
+                "RoomNumber": f"{building}-{target_name}",
                 "RoomName": target_node.get("label", event_name),
-                "Floor": str(target_node.get("floor", 1)),
+                "Floor": floor,
                 "X": str(target_node.get("x", 0)),
                 "Y": str(target_node.get("y", 0)),
-                "NodeType": "room",
+                "NodeType": target_node.get("type", "room"),
+                "category": "event",
             })
             event_count += 1
+
         else:
-            print(f"  [MISSING] Event '{event_name}' -> room '{room_number}' not found.")
+            print(f"  [SKIP] Unknown category '{cat}' for node '{raw_node_id}'")
 
 # =========================================================================
 # SUMMARY
@@ -256,10 +270,10 @@ total = room_count + structural_count + course_count + event_count
 print("=" * 60)
 print(f"  SUCCESS: Database Seeding Complete!")
 print("")
-print(f"  POI/Room records   : {room_count}")
-print(f"  Structural nodes   : {structural_count}")
-print(f"  Course records     : {course_count}")
-print(f"  Event records      : {event_count}")
+print(f"  🚪  Room / POI records : {room_count}")
+print(f"  🔧  Structural nodes   : {structural_count}")
+print(f"  📚  Course records     : {course_count}")
+print(f"  📅  Event records      : {event_count}")
 print(f"  -----------------------------")
-print(f"  Total inserted     : {total}")
+print(f"  Total inserted         : {total}")
 print("=" * 60)
