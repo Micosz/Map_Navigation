@@ -65,6 +65,35 @@
         <div class="floor-badge" id="badge-floor-2" data-i18n="floor2">Floor 2</div>
     </div>
 
+    <!-- Mobile Hamburger Menu Button -->
+    <button id="event-menu-toggle" class="hamburger-btn">☰ กิจกรรม</button>
+
+    <!-- Sidebar Backdrop for Mobile -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+    <!-- Event Sidebar -->
+    <aside id="event-sidebar" class="event-sidebar">
+        <div class="sidebar-header">
+            <h2 data-i18n="today_events">Today's Events</h2>
+            <button id="close-sidebar-btn" class="close-sidebar">✕</button>
+        </div>
+        <div class="sidebar-content" id="sidebar-content">
+            <!-- Dynamic events will be injected here -->
+            <div class="event-card" data-room="135">
+                <div class="event-card-title">งานประชุมสัมมนา AI for Future 2026</div>
+                <div class="event-card-meta">📅 วันนี้ • 📍 135</div>
+            </div>
+            <div class="event-card" data-room="126">
+                <div class="event-card-title">จุดลองเสื้อช็อป CS</div>
+                <div class="event-card-meta">📅 วันนี้ • 📍 126</div>
+            </div>
+            <div class="event-card" data-room="hallway-5">
+                <div class="event-card-title">Open House (จุดลงทะเบียน)</div>
+                <div class="event-card-meta">📅 วันนี้ • 📍 hallway-5</div>
+            </div>
+        </div>
+    </aside>
+
     <!-- Mapping Engine -->
     <div class="map-arena" id="map-arena">
         <div class="map-viewport" id="map-viewport">
