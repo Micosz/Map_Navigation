@@ -27,6 +27,7 @@ let currentLang = 'en';
 const translations = {
     en: {
         title: 'Indoor Wayfinder',
+        subtitle: 'LC3 Building Navigation',
         from: 'FROM:',
         to: 'TO:',
         navigate: 'Navigate',
@@ -37,6 +38,11 @@ const translations = {
         floor1: 'Floor 1',
         floor2: 'Floor 2',
         directions: '📋 Directions',
+        suggest: 'Suggest:',
+        toilet: 'Restroom',
+        stairs: 'Stairs',
+        searchPlaceholder: 'Search rooms',
+        today_events: "Today's Events",
         // Direction instructions
         startAt: 'Start at',
         room: 'Room',
@@ -59,6 +65,7 @@ const translations = {
     },
     th: {
         title: 'ระบบนำทางภายใน',
+        subtitle: 'ระบบนำทางในอาคารบร.3',
         from: 'จาก:',
         to: 'ถึง:',
         navigate: 'นำทาง',
@@ -69,6 +76,11 @@ const translations = {
         floor1: 'ชั้น 1',
         floor2: 'ชั้น 2',
         directions: '📋 เส้นทาง',
+        suggest: 'แนะนำ:',
+        toilet: 'ห้องน้ำ',
+        stairs: 'บันได',
+        searchPlaceholder: 'ค้นหาห้องเรียน',
+        today_events: 'กิจกรรมวันนี้',
         startAt: 'เริ่มที่',
         room: 'ห้อง',
         walkHallway: 'เดินไปตามทางเดินบน',
@@ -100,6 +112,12 @@ function applyTranslations() {
         const key = el.getAttribute('data-i18n');
         const text = t(key);
         if (text) el.textContent = text;
+    });
+    // Update placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        const text = t(key);
+        if (text) el.placeholder = text;
     });
     // Update language label
     const langLabel = document.getElementById('lang-label');
@@ -180,6 +198,21 @@ function extractSearchTerms(graphData) {
 
 async function ensureGraphLoaded() {
     if (globalGraphState) return globalGraphState;
+    
+    // 1. Try local graph.json first
+    try {
+        const res = await fetch('./graph.json');
+        if (res.ok) {
+            globalGraphState = await res.json();
+            cachedSearchTerms = extractSearchTerms(globalGraphState);
+            console.log('Graph loaded from local graph.json successfully.');
+            return globalGraphState;
+        }
+    } catch (e) {
+        console.warn('Local graph.json fetch failed, trying API:', e.message);
+    }
+
+    // 2. Fallback to API pre-fetch
     try {
         const baseUrl = window.API_SEARCH_ENDPOINT || 'http://localhost/search';
         const res = await fetch(`${baseUrl}?search=101`, {
@@ -193,17 +226,22 @@ async function ensureGraphLoaded() {
             }
         }
     } catch (e) {
-        console.warn('Graph pre-fetch failed:', e.message);
+        console.warn('Graph pre-fetch from API failed:', e.message);
     }
     return globalGraphState;
 }
 
-function setupAutocomplete(inputId, listId) {
+function setupAutocomplete(inputId, listId, onSelect) {
     const input = document.getElementById(inputId);
     const list = document.getElementById(listId);
     let activeIndex = -1;
 
+    if (!input || !list) return;
     if (input.readOnly) return;
+
+    if (onSelect) {
+        input._onAutocompleteSelect = onSelect;
+    }
 
     input.addEventListener('focus', async () => {
         await ensureGraphLoaded();
@@ -268,30 +306,57 @@ function renderSuggestions(input, list) {
  * Returns an array of suggestion-compatible objects.
  */
 async function searchEventsFromAPI(query) {
+    // 1. Try fetching from AWS API Gateway first if endpoint is defined
     try {
-        const baseUrl = window.API_SEARCH_ENDPOINT || 'http://localhost/search';
-        const res = await fetch(`${baseUrl}?search=${encodeURIComponent(query)}`, {
-            method: 'GET', mode: 'cors', headers: { 'Accept': 'application/json' }
-        });
-        if (!res.ok) return [];
-
-        const data = await res.json();
-        if (!data.locations) return [];
-
-        return data.locations
-            .map(loc => ({
-                name: loc.SearchTerm,
-                label: loc.RoomName || '',
-                type: loc.category,
-                category: loc.category,
-                floor: parseInt(loc.Floor) || 1,
-                id: loc.NodeID,
-                nodeEntry: loc.NodeEntry,
-                roomNumber: loc.RoomNumber
-            }));
+        const baseUrl = window.API_SEARCH_ENDPOINT;
+        if (baseUrl) {
+            const res = await fetch(`${baseUrl}?search=${encodeURIComponent(query)}`, {
+                method: 'GET', mode: 'cors', headers: { 'Accept': 'application/json' }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                if (data.locations) {
+                    return data.locations.map(loc => ({
+                        name: loc.SearchTerm,
+                        label: loc.RoomName || '',
+                        type: loc.category,
+                        category: loc.category,
+                        floor: parseInt(loc.Floor) || 1,
+                        id: loc.NodeID,
+                        nodeEntry: loc.NodeEntry,
+                        roomNumber: loc.RoomNumber
+                    }));
+                }
+            }
+        }
     } catch (e) {
-        return [];
+        console.warn('API Search failed, attempting local fallback:', e.message);
     }
+
+    // 2. Offline Fallback: Search the local globalGraphState loaded from graph.json
+    await ensureGraphLoaded();
+    if (globalGraphState && globalGraphState.nodes) {
+        const queryLower = query.toLowerCase().trim();
+        return globalGraphState.nodes
+            .filter(node => {
+                const nodeType = node.type || '';
+                const name = (node.name || '').toLowerCase();
+                const label = (node.label || '').toLowerCase();
+                return (SEARCHABLE_TYPES.includes(nodeType) || nodeType === 'room') && 
+                       (name.includes(queryLower) || label.includes(queryLower));
+            })
+            .map(node => ({
+                name: node.name || node.id,
+                label: node.label || '',
+                type: node.type,
+                category: 'room',
+                floor: parseInt(node.floor) || 1,
+                id: node.id,
+                nodeEntry: node.id,
+                roomNumber: `LC3-${node.name || node.id}`
+            }));
+    }
+    return [];
 }
 
 /**
@@ -336,6 +401,9 @@ function renderMatchItems(localMatches, input, list, apiMatches = []) {
             input.value = term.name;
             closeSuggestions(list);
             input.focus();
+            if (typeof input._onAutocompleteSelect === 'function') {
+                input._onAutocompleteSelect(term);
+            }
         });
         list.appendChild(item);
     });
@@ -678,11 +746,79 @@ function setupMapGestures() {
 // DOM SETUP
 // =====================================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Floor badge hooks
-    document.getElementById('badge-floor-1').addEventListener('click', () => switchFloor(1));
-    document.getElementById('badge-floor-2').addEventListener('click', () => switchFloor(2));
+    // ── Zoom buttons ──
+    const zoomInBtn = document.getElementById('zoomIn');
+    const zoomOutBtn = document.getElementById('zoomOut');
+    if (zoomInBtn) zoomInBtn.addEventListener('click', () => {
+        const newScale = Math.min(mapScale * 1.3, MAX_SCALE);
+        zoomToCenter(newScale);
+    });
+    if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => {
+        const newScale = Math.max(mapScale / 1.3, MIN_SCALE);
+        zoomToCenter(newScale);
+    });
 
-    // Enter key support
+    // ── Single search input (bottom sheet results) ──
+    const singleInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearch');
+    const bottomSheet = document.getElementById('bottomSheet');
+    const sheetContent = document.getElementById('sheetContent');
+    const searchTags = document.getElementById('searchTags');
+
+    // ── Toggle Search Panel ──
+    const toggleSearchBtn = document.getElementById('toggleSearchBtn');
+    const searchPanelBody = document.getElementById('search-panel-body');
+    if (toggleSearchBtn && searchPanelBody) {
+        toggleSearchBtn.addEventListener('click', () => {
+            searchPanelBody.classList.toggle('collapsed');
+            toggleSearchBtn.classList.toggle('collapsed');
+            
+            // If opening, focus the search input
+            if (!searchPanelBody.classList.contains('collapsed')) {
+                setTimeout(() => singleInput.focus(), 300);
+            }
+        });
+    }
+
+    function debounce(fn, ms) {
+        let timer;
+        return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), ms); };
+    }
+
+    if (singleInput) {
+        singleInput.addEventListener('input', debounce(function () {
+            const q = this.value.trim().toLowerCase();
+            if (q.length > 0) {
+                if (clearBtn) clearBtn.style.display = 'block';
+                if (searchTags) searchTags.style.display = 'none';
+                showBottomSheetSearch(q, bottomSheet, sheetContent);
+            } else {
+                closeBottomSheet(bottomSheet, sheetContent, singleInput, clearBtn, searchTags);
+            }
+        }, 200));
+    }
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            closeBottomSheet(bottomSheet, sheetContent, singleInput, clearBtn, searchTags);
+        });
+    }
+
+    // Tag buttons
+    document.querySelectorAll('.tag-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const q = btn.getAttribute('data-search') || btn.textContent.trim();
+            if (singleInput) singleInput.value = q;
+            if (clearBtn) clearBtn.style.display = 'block';
+            if (searchTags) searchTags.style.display = 'none';
+            showBottomSheetSearch(q.toLowerCase(), bottomSheet, sheetContent);
+        });
+    });
+
+    // Bottom sheet drag handle
+    setupBottomSheetDrag(bottomSheet);
+
+    // ── Enter key support ──
     document.getElementById('goal-query').addEventListener('keyup', (e) => {
         if (e.key === 'Enter') { e.preventDefault(); navigateUser(); }
     });
@@ -690,7 +826,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') { e.preventDefault(); navigateUser(); }
     });
 
-    // URL Parameter Detection (QR Code + Route Sharing)
+    // ── URL Parameter Detection ──
     const urlParams = new URLSearchParams(window.location.search);
     const qrStart = urlParams.get('start');
     const qrGoal = urlParams.get('goal');
@@ -708,6 +844,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Setup autocomplete
     setupAutocomplete('start-query', 'start-suggestions');
     setupAutocomplete('goal-query', 'goal-suggestions');
+    setupAutocomplete('searchInput', 'search-suggestions', (term) => {
+        // Set goal field
+        const goalQuery = document.getElementById('goal-query');
+        if (goalQuery) goalQuery.value = term.name;
+
+        // Auto-fill and start navigation if start query is already filled
+        const startQuery = document.getElementById('start-query');
+        if (startQuery && startQuery.value.trim() !== '') {
+            navigateUser();
+        } else if (startQuery) {
+            // Expand panel if collapsed, then focus start
+            const searchPanelBody = document.getElementById('search-panel-body');
+            const toggleSearchBtn = document.getElementById('toggleSearchBtn');
+            if (searchPanelBody && searchPanelBody.classList.contains('collapsed')) {
+                searchPanelBody.classList.remove('collapsed');
+                if (toggleSearchBtn) toggleSearchBtn.classList.remove('collapsed');
+            }
+            setTimeout(() => startQuery.focus(), 300);
+        }
+    });
 
     // Auto-navigate if both params
     if (qrStart && qrGoal) {
@@ -730,47 +886,44 @@ document.addEventListener('DOMContentLoaded', () => {
 // =====================================================
 // MAP INITIALIZATION
 // =====================================================
-function isTouchDevice() {
-    return window.matchMedia('(pointer: coarse)').matches;
-}
-
 function initMap() {
-    if (isTouchDevice()) {
-        setupMobileMap();
-    } else {
-        resizeMap();
-        window.addEventListener('resize', resizeMap);
-    }
-}
-
-function resizeMap() {
-    document.querySelectorAll('.map-layer').forEach(layer => {
-        const canvas = layer.querySelector('canvas');
-        if (!canvas) return;
-        const scaleX = window.innerWidth / (canvas.width + 40);
-        const scaleY = (window.innerHeight - 180) / canvas.height;
-        const scale = Math.min(scaleX, scaleY, 1.2);
-        layer.style.transform = `translate(-50%, -45%) scale(${scale})`;
-    });
-}
-
-function setupMobileMap() {
     const arena = document.getElementById('map-arena');
-    arena.style.display = 'flex';
-    arena.style.position = 'relative';
+    if (!arena) return;
 
+    // Remove legacy CSS transforms from map layers
     document.querySelectorAll('.map-layer').forEach(layer => {
-        layer.style.position = 'relative';
-        layer.style.top = 'unset';
-        layer.style.left = 'unset';
+        layer.style.position = 'absolute';
+        layer.style.top = '0';
+        layer.style.left = '0';
         layer.style.transform = 'none';
-        layer.style.display = 'none';
+        if (window.matchMedia('(pointer: coarse)').matches) {
+            window._mobileFloorSwitch = true;
+            layer.style.display = layer.classList.contains('active') ? 'block' : 'none';
+        }
     });
 
-    const activeLayer = document.querySelector('.map-layer.active');
-    if (activeLayer) activeLayer.style.display = 'block';
+    const vp = document.getElementById('map-viewport');
+    if (vp) {
+        vp.style.width = '100%';
+        vp.style.height = '100%';
+    }
 
-    window._mobileFloorSwitch = true;
+    // Default target: center of Floor 1 image (1217x742)
+    const imgWidth = 1217;
+    const imgHeight = 742;
+    
+    // Calculate a scale that fits the screen
+    const scaleX = arena.clientWidth / (imgWidth + 40);
+    const scaleY = arena.clientHeight / (imgHeight + 40);
+    const optimalScale = Math.min(scaleX, scaleY, 1.2);
+
+    mapScale = Math.max(optimalScale, MIN_SCALE);
+
+    // Center the map in the arena
+    mapPanX = (arena.clientWidth / 2) - ((imgWidth / 2) * mapScale);
+    mapPanY = (arena.clientHeight / 2) - ((imgHeight / 2) * mapScale);
+
+    applyMapTransform();
 }
 
 // =====================================================
@@ -803,30 +956,86 @@ async function navigateUser(event) {
     try {
         showToast(t('calcPoints'));
 
-        const baseUrl = window.API_SEARCH_ENDPOINT || 'http://localhost/search';
-        const startUrl = `${baseUrl}?search=${encodeURIComponent(startTerm)}`;
-        const goalUrl = `${baseUrl}?search=${encodeURIComponent(goalTerm)}`;
+        let startNodeId = null;
+        let targetNodeId = null;
+        let resNameStart = startTerm;
+        let resNameGoal = goalTerm;
 
-        const [resStart, resGoal] = await Promise.all([
-            fetch(startUrl, { method: 'GET', mode: 'cors', headers: { 'Accept': 'application/json' } }),
-            fetch(goalUrl, { method: 'GET', mode: 'cors', headers: { 'Accept': 'application/json' } })
-        ]);
+        // Try API first
+        try {
+            const baseUrl = window.API_SEARCH_ENDPOINT;
+            if (baseUrl) {
+                const startUrl = `${baseUrl}?search=${encodeURIComponent(startTerm)}`;
+                const goalUrl = `${baseUrl}?search=${encodeURIComponent(goalTerm)}`;
 
-        if (!resStart.ok) throw new Error(resStart.status === 404 ? `Start Location '${startTerm}' not found.` : "API Connection error.");
-        if (!resGoal.ok) throw new Error(resGoal.status === 404 ? `Destination '${goalTerm}' not found.` : "API Connection error.");
+                const [resStart, resGoal] = await Promise.all([
+                    fetch(startUrl, { method: 'GET', mode: 'cors', headers: { 'Accept': 'application/json' } }),
+                    fetch(goalUrl, { method: 'GET', mode: 'cors', headers: { 'Accept': 'application/json' } })
+                ]);
 
-        const startData = await resStart.json();
-        const goalData = await resGoal.json();
+                if (resStart.ok && resGoal.ok) {
+                    const startData = await resStart.json();
+                    const goalData = await resGoal.json();
 
-        if (!startData.graph || !startData.graph.nodes) {
-            throw new Error("AWS System Error: Map data could not be retrieved from S3.");
+                    if (startData.graph && startData.graph.nodes) {
+                        globalGraphState = startData.graph;
+                        cachedSearchTerms = extractSearchTerms(globalGraphState);
+                    }
+
+                    if (startData.locations && startData.locations.length > 0) {
+                        startNodeId = startData.locations[0].NodeID;
+                        resNameStart = startData.locations[0].RoomName || startTerm;
+                    }
+                    if (goalData.locations && goalData.locations.length > 0) {
+                        targetNodeId = goalData.locations[0].NodeID;
+                        resNameGoal = goalData.locations[0].RoomName || goalTerm;
+                    }
+                }
+            }
+        } catch (e) {
+            console.warn("API navigation lookup failed, attempting offline fallback...", e);
         }
 
-        globalGraphState = startData.graph;
-        cachedSearchTerms = extractSearchTerms(globalGraphState);
+        // Offline / Local Fallback
+        if (!startNodeId || !targetNodeId) {
+            await ensureGraphLoaded();
+            if (globalGraphState && globalGraphState.nodes) {
+                const findNodeByTerm = (term) => {
+                    const termLower = term.toLowerCase().trim();
+                    // 1. Try exact match by name
+                    let found = globalGraphState.nodes.find(n => (n.name || '').toLowerCase() === termLower);
+                    if (found) return found;
+                    // 2. Try exact match by ID
+                    found = globalGraphState.nodes.find(n => n.id.toLowerCase() === termLower);
+                    if (found) return found;
+                    // 3. Try partial label match
+                    found = globalGraphState.nodes.find(n => (n.label || '').toLowerCase().includes(termLower));
+                    return found;
+                };
 
-        const startNodeId = startData.locations[0].NodeID;
-        const targetNodeId = goalData.locations[0].NodeID;
+                const startNode = findNodeByTerm(startTerm);
+                const goalNode = findNodeByTerm(goalTerm);
+
+                if (startNode && goalNode) {
+                    startNodeId = startNode.id;
+                    targetNodeId = goalNode.id;
+                    resNameStart = startNode.label || startNode.name || startTerm;
+                    resNameGoal = goalNode.label || goalNode.name || goalTerm;
+                } else {
+                    if (!startNode) {
+                        showToast(`ไม่พบจุดเริ่มต้น '${startTerm}'`, 'error');
+                        return;
+                    }
+                    if (!goalNode) {
+                        showToast(`ไม่พบปลายทาง '${goalTerm}'`, 'error');
+                        return;
+                    }
+                }
+            } else {
+                showToast("ระบบยังไม่พร้อมใช้งาน (กรุณาเชื่อมต่ออินเทอร์เน็ตหรือโหลด graph.json)", 'error');
+                return;
+            }
+        }
 
         const path = aStar(startNodeId, targetNodeId, globalGraphState);
 
@@ -851,8 +1060,6 @@ async function navigateUser(event) {
         const steps = generateInstructions(path);
         renderDirections(steps);
 
-        const resNameStart = startData.locations[0].RoomName || startTerm;
-        const resNameGoal = goalData.locations[0].RoomName || goalTerm;
         showToast(`${t('routeLabel')}: ${resNameStart} ➔ ${resNameGoal}`);
 
     } catch (e) {
@@ -921,8 +1128,11 @@ const ROUTE_ANIMATION_SPEED = 8;
 
 function switchFloor(floorNum) {
     currentFloor = floorNum;
-    document.getElementById('badge-floor-1').classList.toggle('active', floorNum === 1);
-    document.getElementById('badge-floor-2').classList.toggle('active', floorNum === 2);
+    // Update floor badge tracker (old system)
+    const b1 = document.getElementById('badge-floor-1');
+    const b2 = document.getElementById('badge-floor-2');
+    if (b1) b1.classList.toggle('active', floorNum === 1);
+    if (b2) b2.classList.toggle('active', floorNum === 2);
 
     if (window._mobileFloorSwitch) {
         document.getElementById('layer-floor-1').style.display = floorNum === 1 ? 'block' : 'none';
@@ -1152,13 +1362,11 @@ document.addEventListener('DOMContentLoaded', () => {
         sidebarContent.addEventListener('click', (e) => {
             const card = e.target.closest('.event-card');
             if (card) {
-                // If the card has data-room, we can auto-fill and navigate
                 const roomName = card.getAttribute('data-room');
                 if (roomName) {
                     const goalInput = document.getElementById('goal-query');
                     if (goalInput) {
                         goalInput.value = roomName;
-                        // Auto-trigger navigation if start is filled
                         const startInput = document.getElementById('start-query');
                         if (startInput && startInput.value.trim() !== '') {
                             navigateUser();
@@ -1171,3 +1379,99 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// =====================================================
+// BOTTOM SHEET HELPERS
+// =====================================================
+async function showBottomSheetSearch(query, bottomSheet, sheetContent) {
+    if (!bottomSheet || !sheetContent) return;
+    let html = `<div class="search-header">ผลลัพธ์</div>`;
+    try {
+        const baseUrl = window.API_SEARCH_ENDPOINT || 'http://localhost/search';
+        const res = await fetch(`${baseUrl}?search=${encodeURIComponent(query)}`, {
+            method: 'GET', mode: 'cors', headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            const items = data.locations || [];
+            if (items.length === 0) {
+                html += `<div class="result-item">ไม่พบข้อมูล</div>`;
+            } else {
+                items.slice(0, 10).forEach(loc => {
+                    html += `
+                        <div class="result-item" onclick="selectFromBottomSheet('${loc.SearchTerm}', '${loc.NodeID}')">
+                            <b>${loc.SearchTerm}</b><br><small>${loc.RoomName || ''}</small>
+                        </div>`;
+                });
+            }
+        } else {
+            html += `<div class="result-item">ไม่สามารถค้นหาได้ในขณะนี้</div>`;
+        }
+    } catch (e) {
+        html += `<div class="result-item">ไม่สามารถค้นหาได้ในขณะนี้</div>`;
+    }
+    sheetContent.innerHTML = html;
+    bottomSheet.classList.add('show');
+}
+
+window.selectFromBottomSheet = function(searchTerm, nodeId) {
+    const goalInput = document.getElementById('goal-query');
+    if (goalInput) goalInput.value = searchTerm;
+    const startInput = document.getElementById('start-query');
+    if (startInput && startInput.value.trim()) {
+        navigateUser();
+    }
+    const singleInput = document.getElementById('searchInput');
+    if (singleInput) singleInput.value = searchTerm;
+};
+
+function closeBottomSheet(bottomSheet, sheetContent, input, clearBtn, tagsEl) {
+    if (bottomSheet) bottomSheet.classList.remove('show');
+    if (input) input.value = '';
+    if (clearBtn) clearBtn.style.display = 'none';
+    if (tagsEl) tagsEl.style.display = 'flex';
+    setTimeout(() => { if (sheetContent) sheetContent.innerHTML = ''; }, 300);
+}
+
+function setupBottomSheetDrag(sheet) {
+    if (!sheet) return;
+    const handle = document.getElementById('dragHandle');
+    if (!handle) return;
+    let startY = 0;
+    let startTranslate = 0;
+    handle.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+        startTranslate = 0;
+        sheet.style.transition = 'none';
+    }, { passive: true });
+    handle.addEventListener('touchmove', (e) => {
+        const dy = e.touches[0].clientY - startY;
+        if (dy > 0) sheet.style.transform = `translateY(${dy}px)`;
+    }, { passive: true });
+    handle.addEventListener('touchend', (e) => {
+        sheet.style.transition = '';
+        const dy = e.changedTouches[0].clientY - startY;
+        if (dy > 80) {
+            sheet.classList.remove('show');
+            sheet.style.transform = '';
+        } else {
+            sheet.style.transform = '';
+        }
+    });
+}
+
+// =====================================================
+// ZOOM TO CENTER HELPER
+// =====================================================
+function zoomToCenter(newScale) {
+    const arena = document.getElementById('map-arena');
+    if (!arena) return;
+    const rect = arena.getBoundingClientRect();
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const scaleChange = newScale / mapScale;
+    mapPanX = cx - scaleChange * (cx - mapPanX);
+    mapPanY = cy - scaleChange * (cy - mapPanY);
+    mapScale = newScale;
+    applyMapTransform();
+}

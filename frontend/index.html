@@ -1,85 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Indoor Navigation Dashboard</title>
-    <link rel="stylesheet" href="index.css">
+    <title>LC3-Navigator</title>
+    <meta name="description" content="ระบบนำทางภายในอาคารบร.3 — LC3 Indoor Navigation System">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <!-- Load Env dynamically mapped by AWS Setup -->
     <script src="env.js"></script>
 </head>
 
 <body>
-    <!-- Search Interface -->
-    <div class="search-panel" id="search-panel">
-        <div class="search-flex">
-            <h1 class="compact-title" data-i18n="title">Indoor Wayfinder</h1>
+    <!-- ── Top Navigation Bar ── -->
+    <nav class="top-nav">
+        <div class="logo-section">
+            <div class="logo-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="logo-text">
+                <h1>LC3-Navigator</h1>
+                <p data-i18n="subtitle">ระบบนำทางในอาคารบร.3</p>
+            </div>
+        </div>
+        <div class="nav-actions">
+            <button class="hud-btn" id="btn-reset" onclick="resetNavigation()" title="Reset">
+                <span class="hud-icon">↺</span>
+                <span class="hud-label" data-i18n="reset">Reset</span>
+            </button>
+            <div class="hud-divider"></div>
+            <button class="hud-btn" id="btn-theme" onclick="toggleTheme()" title="Theme">
+                <span class="hud-icon" id="theme-icon">🌙</span>
+                <span class="hud-label" id="theme-label" data-i18n="dark">Dark</span>
+            </button>
+            <div class="hud-divider"></div>
+            <button id="btn-lang" class="hud-btn lang-btn" onclick="toggleLanguage()">
+                <span class="hud-icon">🌐</span>
+                <span class="hud-label" id="lang-label">TH</span>
+            </button>
+        </div>
+    </nav>
 
-            <div class="input-group">
-                <div class="input-wrapper">
-                    <div class="input-box">
-                        <span class="tiny-label" data-i18n="from">FROM:</span>
-                        <input type="text" id="start-query" placeholder="101" autocomplete="off">
-                    </div>
-                    <div class="suggestion-list" id="start-suggestions"></div>
-                </div>
+    <!-- ── Toast Notifications ── -->
+    <div class="toast-container" id="toast-container"></div>
 
-                <div class="input-wrapper">
-                    <div class="input-box">
-                        <span class="tiny-label" data-i18n="to">TO:</span>
-                        <input type="text" id="goal-query" placeholder="204" autocomplete="off">
-                    </div>
-                    <div class="suggestion-list" id="goal-suggestions"></div>
-                </div>
+    <!-- ── Map Container ── -->
+    <div class="map-arena" id="map-arena">
+        <div class="map-viewport" id="map-viewport">
+            <!-- Floor 1 Layer -->
+            <div class="map-layer active" id="layer-floor-1">
+                <img src="LC3-MAP-1stFloor.svg" alt="Floor 1" class="map-image" id="img-floor-1" width="1217" height="742">
+                <canvas id="canvas-floor-1" width="1217" height="742"></canvas>
+            </div>
 
-                <button id="btn-navigate" onclick="navigateUser(event)" data-i18n="navigate">Navigate</button>
-                <button id="btn-share" class="btn-share" onclick="shareRoute()">📤 <span
-                        data-i18n="share">Share</span></button>
+            <!-- Floor 2 Layer -->
+            <div class="map-layer" id="layer-floor-2">
+                <img src="LC3-MAP-2ndFloor.svg" alt="Floor 2" class="map-image" id="img-floor-2" width="1152" height="766">
+                <canvas id="canvas-floor-2" width="1152" height="766"></canvas>
             </div>
         </div>
     </div>
 
-    <!-- Feedback Layer -->
-    <div class="toast-container" id="toast-container"></div>
-
-    <!-- Control HUD -->
-    <div class="control-hud" id="control-hud">
-        <button class="hud-btn" id="btn-reset" onclick="resetNavigation()" title="Reset">
-            <span class="hud-icon">↺</span>
-            <span class="hud-label" data-i18n="reset">Reset</span>
-        </button>
-        <div class="hud-divider"></div>
-        <button class="hud-btn" id="btn-lang" onclick="toggleLanguage()" title="Language">
-            <span class="hud-icon">🌐</span>
-            <span class="hud-label" id="lang-label">EN</span>
-        </button>
-        <div class="hud-divider"></div>
-        <button class="hud-btn" id="btn-theme" onclick="toggleTheme()" title="Theme">
-            <span class="hud-icon" id="theme-icon">🌙</span>
-            <span class="hud-label" id="theme-label" data-i18n="dark">Dark</span>
-        </button>
+    <!-- ── Floor Switcher (right side) ── -->
+    <div class="floor-controls">
+        <button class="floor-btn" id="badge-floor-2" data-floor="2" onclick="switchFloor(2)">2</button>
+        <button class="floor-btn active" id="badge-floor-1" data-floor="1" onclick="switchFloor(1)">1</button>
     </div>
 
-    <!-- Active Floor Tracker -->
-    <div class="tracker-status" id="tracker-status">
-        <div class="floor-badge active" id="badge-floor-1" data-i18n="floor1">Floor 1</div>
-        <div class="floor-badge" id="badge-floor-2" data-i18n="floor2">Floor 2</div>
+    <!-- ── Zoom Controls ── -->
+    <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomIn" title="Zoom In"><i class="fas fa-plus"></i></button>
+        <button class="zoom-btn" id="zoomOut" title="Zoom Out"><i class="fas fa-minus"></i></button>
     </div>
 
+    <!-- ── Search Overlay Panel ── -->
+    <div class="search-overlay" id="search-panel">
+        <!-- Single room search -->
+        <div class="input-wrapper">
+            <div class="search-box" id="single-search-box" style="margin-bottom: 0;">
+                <i class="fas fa-book-open text-gray"></i>
+                <input type="text" id="searchInput" placeholder="ค้นหาห้องเรียน" data-i18n-placeholder="searchPlaceholder" autocomplete="off">
+                <i class="fas fa-times text-gray" id="clearSearch" style="display: none; cursor: pointer; padding: 0 5px;"></i>
+                <div style="width: 1px; height: 16px; background: var(--panel-border); margin: 0 8px;"></div>
+                <i class="fas fa-chevron-up text-gray" id="toggleSearchBtn" style="cursor: pointer; padding: 0 5px; transition: transform 0.3s;"></i>
+            </div>
+            <div class="suggestion-list" id="search-suggestions"></div>
+        </div>
 
+        <div id="search-panel-body" class="search-panel-body">
+            <div class="search-tags" id="searchTags" style="margin-top: 12px;">
+                <span class="tag-label" data-i18n="suggest">แนะนำ:</span>
+                <button class="tag-btn" data-search="ห้องน้ำ"><i class="fas fa-restroom"></i> <span data-i18n="toilet">ห้องน้ำ</span></button>
+                <button class="tag-btn" data-search="บันได"><i class="fas fa-stairs"></i> <span data-i18n="stairs">บันได</span></button>
+            </div>
 
+            <!-- ── Navigation Search (FROM → TO) ── -->
+            <div class="nav-search-group" style="border-top: 1px solid var(--panel-border); padding-top: 15px; margin-top: 15px;">
+                <div class="input-wrapper" style="margin-bottom: 10px;">
+                    <div class="search-box nav-input-box" style="margin-bottom: 0;">
+                        <span class="tiny-label" data-i18n="from">FROM:</span>
+                        <input type="text" id="start-query" placeholder="101" autocomplete="off"
+                            style="flex: 1; border: none; outline: none; background: transparent; color: var(--text-main);">
+                    </div>
+                    <div class="suggestion-list" id="start-suggestions"></div>
+                </div>
 
+                <div class="input-wrapper" style="margin-bottom: 15px;">
+                    <div class="search-box nav-input-box" style="margin-bottom: 0;">
+                        <span class="tiny-label" data-i18n="to">TO:</span>
+                        <input type="text" id="goal-query" placeholder="204" autocomplete="off"
+                            style="flex: 1; border: none; outline: none; background: transparent; color: var(--text-main);">
+                    </div>
+                    <div class="suggestion-list" id="goal-suggestions"></div>
+                </div>
 
-    <!-- Event Sidebar -->
+                <div style="display: flex; gap: 8px;">
+                    <button id="btn-navigate" onclick="navigateUser(event)" class="nav-btn" data-i18n="navigate">Navigate</button>
+                    <button id="btn-share" class="btn-share" onclick="shareRoute()">📤 <span data-i18n="share">Share</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Bottom Sheet (Search Results) ── -->
+    <div id="bottomSheet" class="bottom-sheet">
+        <div class="drag-handle-container" id="dragHandle">
+            <div class="drag-handle"></div>
+        </div>
+        <div id="sheetContent" class="sheet-content"></div>
+    </div>
+
+    <!-- ── Step-by-Step Directions Panel ── -->
+    <div id="directions-container" class="directions-container"></div>
+
+    <!-- ── Event Sidebar ── -->
     <aside id="event-sidebar" class="event-sidebar">
         <div class="sidebar-header">
             <h2 data-i18n="today_events">Today's Events</h2>
-
         </div>
         <div class="sidebar-content" id="sidebar-content">
-            <!-- Dynamic events will be injected here -->
             <div class="event-card" data-room="135">
                 <div class="event-card-title">งานประชุมสัมมนา AI for Future 2026</div>
                 <div class="event-card-meta">📅 วันนี้ • 📍 135</div>
@@ -94,30 +153,6 @@
             </div>
         </div>
     </aside>
-
-    <!-- Mapping Engine -->
-    <div class="map-arena" id="map-arena">
-        <div class="map-viewport" id="map-viewport">
-
-            <!-- Floor 1 Container -->
-            <div class="map-layer active" id="layer-floor-1">
-                <img src="LC3-MAP-1stFloor.svg" alt="Floor 1" class="map-image" id="img-floor-1" width="1217"
-                    height="742">
-                <canvas id="canvas-floor-1" width="1217" height="742"></canvas>
-            </div>
-
-            <!-- Floor 2 Container -->
-            <div class="map-layer" id="layer-floor-2">
-                <img src="LC3-MAP-2ndFloor.svg" alt="Floor 2" class="map-image" id="img-floor-2" width="1152"
-                    height="766">
-                <canvas id="canvas-floor-2" width="1152" height="766"></canvas>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Step-by-Step Directions Panel (in document flow, below map) -->
-    <div id="directions-container" class="directions-container"></div>
 
     <script src="app.js"></script>
 </body>
